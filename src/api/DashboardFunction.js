@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
+const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -70,6 +70,34 @@ export const checkDM = () => {
         });
 }
 
+export const checkFollow = () => {
+    return axiosInstance
+        .post("/check_follow", {
+
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const checkComment = () => {
+    return axiosInstance
+        .post("/check_comment", {
+
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
 export const displayComment = (data) => {
     console.log("here is display comment fucntion")
     return dispatch => {
@@ -98,6 +126,8 @@ export const newComment = (data) => {
             account_name: data.account_name,
             bot_number: data.bot_number,
             profile: data.profile,
+            previous_content: data.previous_content,
+            link: data.link
         })
         .then((res) => {
             console.log(res.data)
@@ -133,6 +163,20 @@ export const newMsg = (data) => {
             username: data.username,
             bot_number: data.bot_number,
             profile: data.profile,
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const checkNotification = () => {
+    return axiosInstance
+        .post("check_notification", {
+
         })
         .then((res) => {
             console.log(res.data)

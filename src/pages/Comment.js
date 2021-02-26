@@ -48,12 +48,18 @@ class Comment extends Component {
             account_name: this.state.account_name,
             bot_number: this.state.bot_number,
             profile: this.state.profile,
-            content: this.state.msg_content
+            content: this.state.msg_content,
+            previous_content: localStorage.getItem('previous_content'),
+            link: localStorage.getItem('link'),
         }
         console.log("data", data)
         newComment(data).then((res) => {
             if (res.code == "failed"){
                 alert(res.message)
+            }
+            else {
+                alert("Comment sent")
+                this.setState({msg_content: ""})
             }
         })
     }
@@ -101,7 +107,7 @@ class Comment extends Component {
                     <div>
                           <div style={{display:"flex"}}>
                                 <textarea rows="3" onChange={this.onChange} id="msg-content" name= "msg_content" value={this.state.msg_content} placeholder="Type your message here..."></textarea>
-                                <Button onClick={this.sendMsg} style={{marginLeft:"20px"}}>Send</Button>
+                                <Button onClick={this.sendMsg} style={{marginTop:"auto",marginBottom: "auto", marginLeft:"20px", padding: '10px 30px', height: '100%'}}>Send</Button>
                           </div>
                     </div>
                 </div>

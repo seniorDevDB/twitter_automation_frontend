@@ -55,7 +55,7 @@ class Message extends Component {
         return (
             <div className="content-wrapper">
             <div className="card">
-            <div className="no-gutters">
+            <div className="no-gutters" style={{paddingTop:"45px"}}>
                 <div className="chat-container">
                     <ul className="chat-box chatContainerScroll">
                         {msgData && msgData.map((data, index) => (

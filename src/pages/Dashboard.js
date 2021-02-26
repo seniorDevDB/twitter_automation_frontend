@@ -25,8 +25,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { startBot, endBot, getAllData, checkDM } from "./../api/DashboardFunction";
-import { PhoneEnabledOutlined } from "@material-ui/icons";
+import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification } from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -53,15 +52,15 @@ class Dashboard extends Component {
         super();
         this.state = {
             data: {},
-            bot1_msg1: 'https://docs.google.com/document/d/1ilCkha_pnrK_ojEIr_kwvahLAZzrjuZw4h0IYj4NmjM/edit',
-            bot1_msg2: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
-            bot1_comment_msg: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
-            bot2_msg1: 'https://docs.google.com/document/d/1ilCkha_pnrK_ojEIr_kwvahLAZzrjuZw4h0IYj4NmjM/edit',
-            bot2_msg2: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
-            bot2_comment_msg: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
-            bot3_msg1: 'https://docs.google.com/document/d/1ilCkha_pnrK_ojEIr_kwvahLAZzrjuZw4h0IYj4NmjM/edit',
-            bot3_msg2: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
-            bot3_comment_msg: 'https://docs.google.com/document/d/1vEhe8gYOuHdkAJY5IHnSfT5pnH3ksVQCkXeL4y6L5Jk/edit?usp=sharing',
+            bot1_msg1: 'https://www.protectedtext.com/v1_msg1',
+            bot1_msg2: 'https://www.protectedtext.com/v1_msg2',
+            bot1_comment_msg: 'https://www.protectedtext.com/v_comment',
+            bot2_msg1: 'https://www.protectedtext.com/v2_msg1',
+            bot2_msg2: 'https://www.protectedtext.com/v2_msg2',
+            bot2_comment_msg: 'https://www.protectedtext.com/v_comment',
+            bot3_msg1: 'https://www.protectedtext.com/v3_msg1',
+            bot3_msg2: 'https://www.protectedtext.com/v3_msg2',
+            bot3_comment_msg: 'https://www.protectedtext.com/v_comment',
             username_num: 100,
             bot1_successful_dm: 0,
             bot1_unsuccessful_dm: 0,
@@ -74,12 +73,28 @@ class Dashboard extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        console.log("real",localStorage.usertoken)
+        if (localStorage.usertoken == undefined) {
+            window.location.href = "/login"
+        }
         if( this.props.success === false ) {
             this.props.getAllData();
         }
         console.log("SSSSSSSSSSSSSSSSS")
         console.log(this.props.data)
+        try {
+            setInterval(async () => {
+              const res = await checkNotification();
+              console.log("res", res.code)
+              if (res.code == "success"){
+                window.location.reload(false);
+              }
+
+            }, 10000000);
+          } catch(e) {
+            console.log(e);
+          }
     }
 
     handleDisplayMessage = (data) => {
@@ -90,6 +105,8 @@ class Dashboard extends Component {
 
     handleDisplayComment = (data) => {
         console.log("comment", data)
+        localStorage.setItem('previous_content', data.content);
+        localStorage.setItem('link', data.link)
         this.props.history.push(`/comment/${data.account_username}/${data.to_username}/${data.bot_number}/${data.profile}`)
     }
 
@@ -127,15 +144,6 @@ class Dashboard extends Component {
         })
     }
 
-    handleCheckDM = () => {
-        console.log("check dm clicked")
-        checkDM().then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            } 
-        })
-    }
-
     onChange = (e) => {
         console.log("I am changed!!!!!!!!!!", e.target.value);
         this.setState({ [e.target.name]: e.target.value });
@@ -154,11 +162,10 @@ class Dashboard extends Component {
         console.log("nnn", this.props.reply_comment)
         if( this.props.success === true ) {
             return (
-                <div className="container">
+                <div className="container" style={{paddingTop:"45px"}}>
                     <div className="control-div">
                         <Button variant="primary" onClick = {this.handleStartAutomation}>Start Automation</Button>
                         <Button variant="primary" onClick = {this.handleEndAutomation}>End Automation</Button>
-                        <Button variant="primary" onClick = {this.handleCheckDM}>Check Coming DM</Button>
                     </div>
                     <div>
                         <label>Number of the Usernames</label>
@@ -171,8 +178,11 @@ class Dashboard extends Component {
                         />
                     </div>
                     <div className="report-div row">
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-3 col-sm-3">
                             <h3>Bot1</h3>
+                            <div style={{display: "flex"}}>
+                                <p>Number of Usernames:</p> <b><p>{this.props.report.bot1_user_number}</p></b>
+                            </div>
                             <div style={{display: "flex"}}>
                                 <p>Successful DMS:</p> <b><p>{this.props.report.bot1_successful_dm}</p></b>
                             </div>
@@ -182,11 +192,25 @@ class Dashboard extends Component {
                             <div style={{display: "flex"}}>
                                 <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot1_spintax1_reply}</p></b>
                             </div>
+
+                            <div style={{display: "flex"}}>
+                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot1_successful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot1_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow Back:</p> <b><p>{this.props.report.bot1_follow_back}</p></b>
+                            </div>
+
                             
                         </div>
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-3 col-sm-3">
                             <h3>Bot2</h3>
                             <div style={{display: "flex"}}>
+                                <p>Number of Usernames:</p> <b><p>{this.props.report.bot2_user_number}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
                                 <p>Successful DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
@@ -194,10 +218,23 @@ class Dashboard extends Component {
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot2_spintax1_reply}</p></b>
+                            </div>
+
+                            <div style={{display: "flex"}}>
+                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow Back:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
                             </div>
                         </div>
-                        <div className="col-md-4 col-sm-4">
+                        <div className="col-md-3 col-sm-3">
                             <h3>Bot3</h3>
+                            <div style={{display: "flex"}}>
+                                <p>Number of Usernames:</p> <b><p>{this.props.report.bot2_user_number}</p></b>
+                            </div>
                             <div style={{display: "flex"}}>
                                 <p>Successful DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
                             </div>
@@ -206,6 +243,24 @@ class Dashboard extends Component {
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot2_spintax1_reply}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow Back:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
+                            </div>
+                        </div>
+                        <div className="col-md-3 col-sm-3">
+                            <h3>Bot For Private Usernames</h3>
+                            <div style={{display: "flex"}}>
+                                <p>Follow:</p> <b><p>{this.props.report.follow}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow Back:</p> <b><p>{this.props.report.unfollow}</p></b>
                             </div>
                         </div>
                     </div>
@@ -247,7 +302,7 @@ class Dashboard extends Component {
                             <textarea onChange={this.onChange} id="bot3_comment_msg" name="bot3_comment_msg" rows="3" cols="50" value={this.state.bot3_comment_msg} />
                         </div>
                     </div>
-                    <div className="table">
+                    {/* <div className="table">
                         <MaterialTable
                             icons={tableIcons}
                             columns={[
@@ -282,6 +337,7 @@ class Dashboard extends Component {
                                 { title: "Coming Time", field: "coming_time" },
                                 { title: "Message Content", field: "content"},
                                 { title: "Save Time", field: "save_time"},
+                                { title: "Link", field: "link"},
                                 { title: "Bot Number", field: "bot_number"},
                                 { title: "Browser Number", field: "profile" }
                             ]}
@@ -297,7 +353,7 @@ class Dashboard extends Component {
                             ]}
                             options={{actionsColumnIndex: -1}}
                         />
-                    </div>
+                    </div> */}
                 </div>
             )
         } else {
