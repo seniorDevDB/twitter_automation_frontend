@@ -395,3 +395,8 @@ ul {
     height: calc(100% - 100px);
     overflow-y: auto;
 }
+
+.MuiPaper-root.MuiPaper-elevation2.MuiPaper-rounded {
+    display: flex;
+    flex-direction: column-reverse;
+  }

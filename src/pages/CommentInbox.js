@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Button } from 'react-bootstrap';
-import MaterialTable, { Column, MTableBodyRow } from "material-table";
+import MaterialTable, { Column, MTableBodyRow, TablePagination } from "material-table";
 
 import './style.css'
 
@@ -127,6 +127,28 @@ class CommentInbox extends Component {
         return(
             <div className="table">
                 <MaterialTable
+                components={{
+                    Pagination: props => {
+                      return (
+                        <td>
+                          <table
+                            style={{
+                              position: 'fixed',
+                              bottom: 0,
+                              left: 0,
+                              width: '100%',
+                            }}
+                          >
+                            <tbody>
+                              <tr>
+                                <TablePagination {...props} />
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      );
+                    },
+                  }}
                     icons={tableIcons}
                     columns={[
                         { title: "Username", field: "to_username", width: "20%" },
