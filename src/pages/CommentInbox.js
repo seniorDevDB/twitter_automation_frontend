@@ -135,14 +135,16 @@ class CommentInbox extends Component {
                         { title: "Message Content", field: "content"},
                         { title: "Save Time", field: "save_time"},
                         // { title: "Link", field: "link"},
-                        // { title: "Bot Number", field: "bot_number"},
-                        // { title: "Browser Number", field: "profile" },
+                        { title: "Bot Number", field: "bot_number"},
+                        { title: "Browser Number", field: "profile" },
                         { title: "ID", field: "_id"}
                     ]}
                     data={reply_comment}
                     options={{
-                        paging: false,
-                        toolbar: false,
+                        // paging: false,
+                        // toolbar: false,
+                        pageSizeOptions: [10, 25, 50],
+                        pageSize: 10,
                         headerStyle: {
                           backgroundColor: "#378FC3",
                           color: "#FFF",
@@ -166,7 +168,7 @@ class CommentInbox extends Component {
                                 onMouseLeave={e => this.handleRowHoverLeave(e, props)}
                             />
                             );
-                        }
+                        },
                     }}
                     onRowClick = {this.handleDisplayMessage}
                     // actions={[

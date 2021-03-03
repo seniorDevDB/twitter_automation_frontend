@@ -138,8 +138,10 @@ class DmInbox extends Component {
                     ]}
                     data={new_message}
                     options={{
-                        paging: false,
-                        toolbar: false,
+                        // paging: false,
+                        // toolbar: false,
+                        pageSizeOptions: [10, 25, 50],
+                        pageSize: 10,
                         headerStyle: {
                           backgroundColor: "#378FC3",
                           color: "#FFF",

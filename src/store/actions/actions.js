@@ -5,6 +5,8 @@ export const FETCH_MESSAGE_DATA = "FETCH_MESSAGE_DATA";
 export const FETCH_COMMENT_DATA = "FETCH_COMMENT_DATA";
 export const DM_NOTIFICATION = "DM_NOTIFICATION";
 export const COMMENT_NOTIFICATION = "COMMENT_NOTIFICATION";
+export const MSG_SUCCESS = "MSG_SUCCESS";
+export const COMMENT_SUCCESS = "COMMENT_SUCCESS";
 
 export function fetchDataSuccess(data) {
     return {
@@ -51,4 +53,18 @@ export function commentNotify(data) {
         type: COMMENT_NOTIFICATION,
         payload: data
     };
+}
+
+export function sendMsgSuccess(data) {
+    return {
+        type: MSG_SUCCESS,
+        payload: data
+    }
+}
+
+export function sendCommentSuccess(data) {
+    return {
+        type: COMMENT_SUCCESS,
+        payload: data
+    }
 }

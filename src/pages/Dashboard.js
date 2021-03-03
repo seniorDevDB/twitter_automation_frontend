@@ -195,7 +195,7 @@ class Dashboard extends Component {
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot1_unsuccessful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Follow</p> <b><p>{this.props.report.bot1_follow_back}</p></b>
+                                <p>Follow</p> <b><p>{this.props.report.bot1_follow}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow Back:</p> <b><p>{this.props.report.bot1_follow_back}</p></b>
@@ -225,7 +225,7 @@ class Dashboard extends Component {
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Follow:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
+                                <p>Follow:</p> <b><p>{this.props.report.bot2_follow}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow Back:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
@@ -252,7 +252,7 @@ class Dashboard extends Component {
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot3_unsuccessful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Follow:</p> <b><p>{this.props.report.bot3_follow_back}</p></b>
+                                <p>Follow:</p> <b><p>{this.props.report.bot3_follow}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow Back:</p> <b><p>{this.props.report.bot3_follow_back}</p></b>

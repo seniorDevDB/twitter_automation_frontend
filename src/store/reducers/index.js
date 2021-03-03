@@ -1,4 +1,4 @@
-import { FETCH_DATA_FAILED, FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_MESSAGE_DATA, FETCH_COMMENT_DATA, DM_NOTIFICATION, COMMENT_NOTIFICATION} from "./../actions/actions";
+import { FETCH_DATA_FAILED, FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_MESSAGE_DATA, FETCH_COMMENT_DATA, DM_NOTIFICATION, COMMENT_NOTIFICATION, MSG_SUCCESS, COMMENT_SUCCESS} from "./../actions/actions";
 
 export default function dataReducer(state = {}, action) {
     let newState = { ...state };
@@ -32,6 +32,29 @@ export default function dataReducer(state = {}, action) {
         case COMMENT_NOTIFICATION:
             newState.commentNotification = action.payload;
             return newState;
+        case MSG_SUCCESS:
+            console.log("Herrere", newState)
+            newState.msgData.message.push({
+                content: action.payload.content,
+                username: action.payload.username,
+                link: action.payload.link,
+                bot_number: action.payload.bot_number,
+                profile: action.payload.profile,
+                coming_time: ""
+            })
+            return JSON.parse(JSON.stringify(newState));
+        case COMMENT_SUCCESS:
+            console.log("comment here", newState)
+            newState.commentData.message.push({
+                content: action.payload.content,
+                to_username: action.payload.username,
+                account_username: action.payload.account_name,
+                link: action.payload.link,
+                bot_number: action.payload.bot_number,
+                profile: action.payload.profile,
+                coming_time: ""
+            })
+            return JSON.parse(JSON.stringify(newState));
         default:
             return state;
     }

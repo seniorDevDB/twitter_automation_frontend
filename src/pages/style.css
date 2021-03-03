@@ -275,7 +275,7 @@ tr:hover {
     -moz-border-radius: 4px;
     border-radius: 4px;
     background: #ffffff;
-    font-weight: 300;
+    font-weight: bold;
     line-height: 150%;
     position: relative;
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify } from "./../store/actions/actions";
+import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess } from "./../store/actions/actions";
 import history from "./../history"
 const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
@@ -119,7 +119,7 @@ export const displayComment = (data) => {
 }
 
 export const newComment = (data) => {
-    return axiosInstance
+    return dispatch => axiosInstance
         .post("/new_comment", {
             content: data.content,
             username: data.username,
@@ -131,7 +131,7 @@ export const newComment = (data) => {
         })
         .then((res) => {
             console.log(res.data)
-            return res.data;
+            dispatch(sendCommentSuccess(data));
         })
         .catch((err) => {
             console.log(err);
@@ -157,7 +157,7 @@ export const displayMsg = (data) => {
 }
 
 export const newMsg = (data) => {
-    return axiosInstance
+    return dispatch => axiosInstance
         .post("/new_msg", {
             content: data.content,
             username: data.username,
@@ -166,8 +166,7 @@ export const newMsg = (data) => {
             profile: data.profile,
         })
         .then((res) => {
-            console.log(res.data)
-            return res.data;
+            dispatch(sendMsgSuccess(data));
         })
         .catch((err) => {
             console.log(err);

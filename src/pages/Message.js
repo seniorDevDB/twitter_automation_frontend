@@ -42,15 +42,17 @@ class Message extends Component {
             link: localStorage.getItem('dm_link'),
         }
         console.log("data", data)
-        newMsg(data).then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            }
-            else {
-                alert("dm sent")
-                this.setState({msg_content: ""})
-            }
-        })
+        this.props.newMsg(data)
+        this.setState({msg_content: ""})
+        // .then((res) => {
+        //     if (res.code == "failed"){
+        //         alert(res.message)
+        //     }
+        //     else {
+        //         alert("dm sent")
+        //         this.setState({msg_content: ""})
+        //     }
+        // })
     }
 
     render() {
@@ -67,20 +69,23 @@ class Message extends Component {
                             data.coming_time != '' ? (
                                 <li className="chat-left" key={index}>
                                     <div className="chat-avatar">                     
-                                        <div className="chat-name">"{data.username}"</div>
+                                        <div className="chat-name">{data.username}</div>
                                     </div>
                                     <div class="chat-text">
-                                        "{data.content}"
+                                        {data.content}
                                     </div>
-                                    <div class="chat-hour">"{data.coming_time}"</div>
+                                    <div class="chat-hour">{data.coming_time}</div>
                                 </li>) : (
                                 <li className="chat-right" key={index}>
-                                    <div className="chat-hour">"{ data.coming_time }"</div>
+                                    {data.new_reply || data.new_reply == false ? (
+                                        <div className="chat-hour">"Sent"</div>
+                                    ) : (<div className="chat-hour">"Pending"</div>)}
+                                    <div className="chat-hour">{ data.coming_time }</div>
                                     <div className="chat-text">
-                                    "{ data.content }"
+                                    { data.content }
                                     </div>
                                     <div className="chat-avatar">                         
-                                        <div className="chat-name">"{ data.username }"</div>
+                                        <div className="chat-name">{ data.username }</div>
                                     </div>
                                 </li>
                             )
@@ -107,7 +112,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    displayMsg
+    displayMsg,
+    newMsg
 }, dispatch);
 
 export default connect(
