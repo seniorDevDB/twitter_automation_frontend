@@ -10,7 +10,9 @@ let initialState = {
     error: false,
     data: {
     },
-    msgData: {}
+    msgData: {},
+    dmNotification: false,
+    commentNotification: false,
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData } from "./../store/actions/actions";
+import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify } from "./../store/actions/actions";
 import history from "./../history"
 const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
@@ -161,6 +161,7 @@ export const newMsg = (data) => {
         .post("/new_msg", {
             content: data.content,
             username: data.username,
+            link: data.link,
             bot_number: data.bot_number,
             profile: data.profile,
         })
@@ -174,9 +175,66 @@ export const newMsg = (data) => {
 }
 
 export const checkNotification = () => {
-    return axiosInstance
+    console.log("checkNotification")
+    return dispatch => axiosInstance
         .post("check_notification", {
 
+        })
+        .then((res) => {
+            console.log(res.data)
+            if (res.data.message == "dm"){
+                dispatch(dmNotify(true));
+            }
+            else if (res.data.message == "comment"){
+                dispatch(commentNotify(true));
+            }
+            
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const clearNotification = (data) => {
+    if (data == "dm") {
+        return dispatch => dispatch(dmNotify(false))
+    }
+    else if (data == "comment") {
+        return dispatch => dispatch(commentNotify(false))
+    }
+    
+}
+
+export const updateIsMarked = (data) => {
+    console.log("data", data)
+    return axiosInstance
+        .post("/update_is_marked", {
+            account_username: data.account_username,
+            to_username: data.to_username,
+            bot_number: data.bot_number,
+            profile: data.profile,
+            coming_time: data.coming_time,
+            content: data.content
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const updateIsMarkedDm = (data) => {
+    console.log("datadddd", data)
+    return axiosInstance
+        .post("/update_is_marked_dm", {
+            account_username: data.account_username,
+            username: data.username,
+            bot_number: data.bot_number,
+            profile: data.profile,
+            coming_time: data.coming_time,
+            content: data.content
         })
         .then((res) => {
             console.log(res.data)

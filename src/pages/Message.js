@@ -38,12 +38,17 @@ class Message extends Component {
             username: this.state.username,
             bot_number: this.state.bot_number,
             profile: this.state.profile,
-            content: this.state.msg_content
+            content: this.state.msg_content,
+            link: localStorage.getItem('dm_link'),
         }
         console.log("data", data)
         newMsg(data).then((res) => {
             if (res.code == "failed"){
                 alert(res.message)
+            }
+            else {
+                alert("dm sent")
+                this.setState({msg_content: ""})
             }
         })
     }

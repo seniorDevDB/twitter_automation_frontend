@@ -5,13 +5,16 @@ import jwt_decode from "jwt-decode";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import IconButton from '@material-ui/core/IconButton';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import { Button } from 'react-bootstrap';
 
-import { checkDM, checkComment, checkFollow} from "./../api/DashboardFunction";
+import { checkDM, checkComment, checkFollow, clearNotification} from "./../api/DashboardFunction";
 
 import { useHistory } from "react-router";
 
@@ -112,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState}) => {
+const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotification, commentNotification, clearNotification}) => {
     const classes = useStyles();
     const token = localStorage.usertoken;
     const history = useHistory();
@@ -133,11 +136,17 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState}) => {
 
     function commentReply() {
         console.log("comment reply")
+        clearNotification("comment")
         history.push({pathname: '/comment-inbox'});
     }
 
     function dmReply() {
+        clearNotification("dm")
         history.push({pathname: '/dm-inbox'});
+    }
+
+    function GoToHome() {
+        window.location.href = "/";
     }
 
     function handleCheckDM () {
@@ -184,11 +193,31 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState}) => {
           
             {localStorage.usertoken ? 
               <div>
+                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ GoToHome }>
+                  Home
+                </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ commentReply }>
-                  Comment
+                {
+                    commentNotification && 
+                    <Badge color="error" badgeContent=" " variant="dot">
+                        Comment
+                    </Badge>
+                }
+                {
+                    !commentNotification && "Comment"
+                }
+                
                 </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ dmReply }>
-                  DM
+                {
+                    dmNotification && 
+                    <Badge color="error" badgeContent=" " variant="dot">
+                        DM
+                    </Badge>
+                }
+                {
+                    !dmNotification && "DM"
+                }
                 </Typography>
                 <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckDM}>Check Coming DM</Button>
                 <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckComment}>Check Comment Reply</Button>
@@ -211,4 +240,17 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState}) => {
     )
 }
 
-export default Navbar
+
+const mapStateToProps = state => ({
+    dmNotification: state.dmNotification,
+    commentNotification: state.commentNotification
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    clearNotification
+}, dispatch);
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Navbar)

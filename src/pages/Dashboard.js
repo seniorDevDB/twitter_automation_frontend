@@ -85,13 +85,8 @@ class Dashboard extends Component {
         console.log(this.props.data)
         try {
             setInterval(async () => {
-              const res = await checkNotification();
-              console.log("res", res.code)
-              if (res.code == "success"){
-                window.location.reload(false);
-              }
-
-            }, 10000000);
+              this.props.checkNotification();
+            }, 10000);
           } catch(e) {
             console.log(e);
           }
@@ -184,7 +179,7 @@ class Dashboard extends Component {
                                 <p>Number of Usernames:</p> <b><p>{this.props.report.bot1_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Successful DMS:</p> <b><p>{this.props.report.bot1_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot1_successful_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot1_unsuccessful_dm}</p></b>
@@ -194,10 +189,13 @@ class Dashboard extends Component {
                             </div>
 
                             <div style={{display: "flex"}}>
-                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot1_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot1_successful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot1_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow</p> <b><p>{this.props.report.bot1_follow_back}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow Back:</p> <b><p>{this.props.report.bot1_follow_back}</p></b>
@@ -211,7 +209,7 @@ class Dashboard extends Component {
                                 <p>Number of Usernames:</p> <b><p>{this.props.report.bot2_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Successful DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot2_unsuccessful_dm}</p></b>
@@ -221,10 +219,13 @@ class Dashboard extends Component {
                             </div>
 
                             <div style={{display: "flex"}}>
-                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow Back:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
@@ -233,25 +234,28 @@ class Dashboard extends Component {
                         <div className="col-md-3 col-sm-3">
                             <h3>Bot3</h3>
                             <div style={{display: "flex"}}>
-                                <p>Number of Usernames:</p> <b><p>{this.props.report.bot2_user_number}</p></b>
+                                <p>Number of Usernames:</p> <b><p>{this.props.report.bot3_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Successful DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot3_successful_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot2_unsuccessful_dm}</p></b>
+                                <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot3_unsuccessful_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot2_spintax1_reply}</p></b>
+                                <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot3_spintax1_reply}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Successful COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot3_successful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
+                                <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot3_unsuccessful_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Follow Back:</p> <b><p>{this.props.report.bot2_follow_back}</p></b>
+                                <p>Follow:</p> <b><p>{this.props.report.bot3_follow_back}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>Follow Back:</p> <b><p>{this.props.report.bot3_follow_back}</p></b>
                             </div>
                         </div>
                         <div className="col-md-3 col-sm-3">
@@ -375,7 +379,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getAllData,
+    getAllData,checkNotification
 }, dispatch);
 
 export default connect(

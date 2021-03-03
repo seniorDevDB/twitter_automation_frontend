@@ -25,7 +25,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification } from "./../api/DashboardFunction";
+import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -69,14 +69,43 @@ class CommentInbox extends Component {
     }
 
     isMarkAsRead = (row) => {
-        return row.content == 'Very cute.';
+        console.log("72", row)
+        return row.mark_as_read == false;
     }
 
     handleDisplayMessage = (event, data) => {
         console.log("I am dat!!", data);
-        this.props.history.push(`/comment/${data.account_username}/${data.to_username}/${data.bot_number}/${data.profile}`)
+        // udpate is marked
+        const info = {
+            account_username: data.account_username,
+            to_username: data.to_username,
+            bot_number: data.bot_number,
+            profile: data.profile,
+            coming_time: data.coming_time,
+            content: data.content
+        }
+        updateIsMarked(info).then((res) => {
+            if (res.code == "failed"){
+                alert(res.message)
+            } 
+        })
 
-        // window.location.href = "/message/"+data.username
+        localStorage.setItem('previous_content', data.content);
+        localStorage.setItem('link', data.link)
+        this.props.history.push(`/comment/${data.account_username}/${data.to_username}/${data.bot_number}/${data.profile}`)
+    }
+
+    dateCompare = (firstDate, secondDate) => {
+        const date1 = new Date(firstDate);
+        const date2 = new Date(secondDate);
+
+        if (date1 > date2)
+            return -1;
+
+        if (date1 < date2)
+            return 1;
+
+        return 0;
     }
 
     render() {
@@ -85,11 +114,14 @@ class CommentInbox extends Component {
         const { hoveringOver } = this.state;
 
         if (reply_comment) {
+            reply_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
+
             for (var i = 0 ; i < reply_comment.length; i ++) {
                 const save_time = new Date(reply_comment[i].save_time);
                 console.log("I am tim!!!", save_time);
                 reply_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
             }
+
         }
 
         return(

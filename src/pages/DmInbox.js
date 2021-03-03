@@ -25,7 +25,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification } from "./../api/DashboardFunction";
+import { startBot, endBot, getAllData, updateIsMarkedDm } from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -69,13 +69,42 @@ class DmInbox extends Component {
     }
 
     isMarkAsRead = (row) => {
-        return row.content == 'Very cute.';
+        return row.mark_as_read == false;
     }
 
     handleDisplayMessage = (event, data) => {
         console.log("I am dat!!", data);
-        this.props.history.push(`/message/${data.to_username}/${data.bot_number}/${data.profile}`)
-        // window.location.href = "/message/"+data.username
+        // udpate is marked
+        const info = {
+            account_username: data.account_username,
+            username: data.username,
+            bot_number: data.bot_number,
+            profile: data.profile,
+            coming_time: data.coming_time,
+            content: data.content
+        }
+        updateIsMarkedDm(info).then((res) => {
+            if (res.code == "failed"){
+                alert(res.message)
+            } 
+        })
+        
+        //save the link into localstorage
+        localStorage.setItem('dm_link', data.link)
+        this.props.history.push(`/message/${data.username}/${data.bot_number}/${data.profile}`)
+    }
+
+    dateCompare = (firstDate, secondDate) => {
+        const date1 = new Date(firstDate);
+        const date2 = new Date(secondDate);
+
+        if (date1 > date2)
+            return -1;
+
+        if (date1 < date2)
+            return 1;
+
+        return 0;
     }
 
     render() {
@@ -83,7 +112,10 @@ class DmInbox extends Component {
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
 
+
         if (new_message) {
+            new_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
+
             for (var i = 0 ; i < new_message.length; i ++) {
                 const save_time = new Date(new_message[i].save_time);
                 console.log("I am tim!!!", save_time);
