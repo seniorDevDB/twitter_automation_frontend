@@ -27,6 +27,7 @@ import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification } from "./../api/DashboardFunction";
 
+
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -157,21 +158,59 @@ class Dashboard extends Component {
         console.log("nnn", this.props.reply_comment)
         if( this.props.success === true ) {
             return (
-                <div className="container" style={{paddingTop:"45px"}}>
-                    <div className="control-div">
+                <div style={{paddingTop:"45px", paddingLeft:"20px", paddingRight: "20px", backgroundColor: "#ccffcc"}}>
+                    <div className="control-div container">
                         <Button variant="primary" onClick = {this.handleStartAutomation}>Start Automation</Button>
                         <Button variant="primary" onClick = {this.handleEndAutomation}>End Automation</Button>
+                        <div>
+                            <label>Number of the Leads: </label>
+                            <input
+                                type="number"
+                                className="form-control"
+                                id="username_num"
+                                name="username_num"
+                                value={this.state.username_num}
+                                style = {{width: "30%"}}
+                            />
+                        </div>
+                        {/* <div>
+                            <label>Which bot would you like to choose? </label>
+                            <select className="browser-default custom-select" style = {{width: "30%"}}>
+                                <option>All Bots</option>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div> */}
                     </div>
-                    <div>
-                        <label>Number of the Usernames</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            id="username_num"
-                            name="username_num"
-                            value={this.state.username_num}
+
+                    {/* <div className="table">
+                        <MaterialTable
+                            icons={tableIcons}
+                            columns={[
+                                { title: "Bot Number", field: "_id" },
+                                { title: "Number of Leads", field: "username" },
+                                { title: "Sent DMs", field: "coming_time"},
+                                { title: "Spintax1 DM Replies", field: "content"},
+                                { title: "Sent Comments", field: "save_time"},
+                                { title: "Unsuccessful Comments", field: "bot_number"},
+                                { title: "Comment Replies", field: "profile" },
+                                { title: "Follow", field: "profile" },
+                                { title: "Follow Back", field: "profile" },
+                            ]}
+                            data={this.props.new_message}
+                            title="Bot Report"
+                            // actions={[
+                            //     {
+                            //     icon: View,
+                            //     tooltip: "View",
+                            //     onClick: (event, rowData) =>
+                            //         {this.handleDisplayMessage(rowData)}
+                            //     }
+                            // ]}
+                            options={{actionsColumnIndex: 1}}
                         />
-                    </div>
+                    </div> */}
                     <div className="report-div row">
                         <div className="col-md-3 col-sm-3">
                             <h3>Bot1</h3>
@@ -179,7 +218,7 @@ class Dashboard extends Component {
                                 <p>Number of Usernames:</p> <b><p>{this.props.report.bot1_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Sent DMS:</p> <b><p>{this.props.report.bot1_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot1_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot1_unsuccessful_dm}</p></b>
@@ -189,10 +228,13 @@ class Dashboard extends Component {
                             </div>
 
                             <div style={{display: "flex"}}>
-                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot1_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot1_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot1_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>COMMENT Replies:</p> <b><p>{this.props.report.bot1_comment_reply}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow</p> <b><p>{this.props.report.bot1_follow}</p></b>
@@ -209,7 +251,7 @@ class Dashboard extends Component {
                                 <p>Number of Usernames:</p> <b><p>{this.props.report.bot2_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Sent DMS:</p> <b><p>{this.props.report.bot2_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot2_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot2_unsuccessful_dm}</p></b>
@@ -219,10 +261,13 @@ class Dashboard extends Component {
                             </div>
 
                             <div style={{display: "flex"}}>
-                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot2_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot2_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot2_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>COMMENT Replies:</p> <b><p>{this.props.report.bot2_comment_reply}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow:</p> <b><p>{this.props.report.bot2_follow}</p></b>
@@ -237,7 +282,7 @@ class Dashboard extends Component {
                                 <p>Number of Usernames:</p> <b><p>{this.props.report.bot3_user_number}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Sent DMS:</p> <b><p>{this.props.report.bot3_successful_dm}</p></b>
+                                <p>Sent DMS:</p> <b><p>{this.props.report.bot3_dm}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful DMS:</p> <b><p>{this.props.report.bot3_unsuccessful_dm}</p></b>
@@ -246,10 +291,13 @@ class Dashboard extends Component {
                                 <p>Spintax Message 1 Replies:</p> <b><p>{this.props.report.bot3_spintax1_reply}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
-                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot3_successful_comment}</p></b>
+                                <p>Sent COMMENTS:</p> <b><p>{this.props.report.bot3_comment}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Unsuccessful COMMENTS:</p> <b><p>{this.props.report.bot3_unsuccessful_comment}</p></b>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <p>COMMENT Replies:</p> <b><p>{this.props.report.bot3_comment_reply}</p></b>
                             </div>
                             <div style={{display: "flex"}}>
                                 <p>Follow:</p> <b><p>{this.props.report.bot3_follow}</p></b>
@@ -306,58 +354,6 @@ class Dashboard extends Component {
                             <textarea onChange={this.onChange} id="bot3_comment_msg" name="bot3_comment_msg" rows="3" cols="50" value={this.state.bot3_comment_msg} />
                         </div>
                     </div>
-                    {/* <div className="table">
-                        <MaterialTable
-                            icons={tableIcons}
-                            columns={[
-                                { title: "ID", field: "_id" },
-                                { title: "Username", field: "username" },
-                                { title: "Coming Message Time", field: "coming_time"},
-                                { title: "Message Content", field: "content"},
-                                { title: "Save Time", field: "save_time"},
-                                { title: "Bot Number", field: "bot_number"},
-                                { title: "Browser Number", field: "profile" }
-                            ]}
-                            data={this.props.new_message}
-                            title="Coming DM Table"
-                            actions={[
-                                {
-                                icon: View,
-                                tooltip: "View",
-                                onClick: (event, rowData) =>
-                                    {this.handleDisplayMessage(rowData)}
-                                }
-                            ]}
-                            options={{actionsColumnIndex: -1}}
-                        />
-                    </div>
-                    <div className="table">
-                        <MaterialTable
-                            icons={tableIcons}
-                            columns={[
-                                { title: "ID", field: "_id" },
-                                { title: "Username", field: "to_username" },
-                                { title: "Account Username", field: "account_username"},
-                                { title: "Coming Time", field: "coming_time" },
-                                { title: "Message Content", field: "content"},
-                                { title: "Save Time", field: "save_time"},
-                                { title: "Link", field: "link"},
-                                { title: "Bot Number", field: "bot_number"},
-                                { title: "Browser Number", field: "profile" }
-                            ]}
-                            data={this.props.reply_comment}
-                            title="Comment History Table"
-                            actions={[
-                                {
-                                icon: View,
-                                tooltip: "View",
-                                onClick: (event, rowData) =>
-                                    {this.handleDisplayComment(rowData)}
-                                }
-                            ]}
-                            options={{actionsColumnIndex: -1}}
-                        />
-                    </div> */}
                 </div>
             )
         } else {

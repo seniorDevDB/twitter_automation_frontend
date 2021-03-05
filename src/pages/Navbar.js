@@ -11,6 +11,12 @@ import { bindActionCreators } from 'redux';
 
 import IconButton from '@material-ui/core/IconButton';
 
+import HomeIcon from '@material-ui/icons/Home';
+import CommentIcon from '@material-ui/icons/Comment';
+import MessageIcon from '@material-ui/icons/Message';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import { Button } from 'react-bootstrap';
 
@@ -178,33 +184,22 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} style={{backgroundColor: "darkgreen"}}>
             <Toolbar className={classes.toolbar}>
-            {hasHamburger && <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-                <MenuIcon />
-            </IconButton>}
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              {/* Dashboard */}
-            </Typography>
+
           
             {localStorage.usertoken ? 
               <div>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ GoToHome }>
-                  Home
+                  <HomeIcon fontSize="large"/>
                 </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ commentReply }>
                 {
                     commentNotification && 
                     <Badge color="error" badgeContent=" " variant="dot">
-                        Comment
+                        <CommentIcon fontSize="large"/>
                     </Badge>
                 }
                 {
-                    !commentNotification && "Comment"
+                    !commentNotification && <CommentIcon fontSize="large"/>
                 }
                 
                 </Typography>
@@ -212,18 +207,21 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                 {
                     dmNotification && 
                     <Badge color="error" badgeContent=" " variant="dot">
-                        DM
+                         <MessageIcon fontSize="large"/>
                     </Badge>
                 }
                 {
-                    !dmNotification && "DM"
+                    !dmNotification && <MessageIcon fontSize="large"/>
                 }
                 </Typography>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckDM}>Check Coming DM</Button>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckComment}>Check Comment Reply</Button>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckFollow}>Check Follow Back</Button>
+                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ dmReply }>
+                  <AssessmentIcon fontSize="large"/>
+                </Typography>
+                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckDM} disabled>Check Coming DM</Button>
+                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckComment} disabled>Check Comment Reply</Button>
+                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckFollow} disabled>Check Follow Back</Button>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ logout }>
-                  Logout
+                  <ExitToAppIcon fontSize="large"/>
                 </Typography>
               </div> :
               <div>

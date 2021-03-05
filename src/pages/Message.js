@@ -6,6 +6,9 @@ import { bindActionCreators } from 'redux';
 import dataReducer from "../store/reducers";
 import { displayMsg, newMsg } from "./../api/DashboardFunction";
 
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+
 class Message extends Component {
     constructor() {
         super();
@@ -68,7 +71,8 @@ class Message extends Component {
                         {msgData && msgData.map((data, index) => (
                             data.coming_time != '' ? (
                                 <li className="chat-left" key={index}>
-                                    <div className="chat-avatar">                     
+                                    <div className="chat-avatar">  
+                                        <AccountCircleIcon fontSize="large"/>                   
                                         <div className="chat-name">{data.username}</div>
                                     </div>
                                     <div class="chat-text">
@@ -84,7 +88,8 @@ class Message extends Component {
                                     <div className="chat-text">
                                     { data.content }
                                     </div>
-                                    <div className="chat-avatar">                         
+                                    <div className="chat-avatar">   
+                                        <AccountBoxIcon fontSize="large"/>                            
                                         <div className="chat-name">{ data.username }</div>
                                     </div>
                                 </li>
@@ -95,7 +100,7 @@ class Message extends Component {
                     <div>
                           <div style={{display:"flex"}}>
                                 <textarea rows="3" onChange={this.onChange} id="msg-content" name= "msg_content" value={this.state.msg_content} placeholder="Type your message here..."></textarea>
-                                <Button onClick={this.sendMsg} style={{marginLeft:"20px"}}>Send</Button>
+                                <Button onClick={this.sendMsg} style={{marginTop:"auto",marginBottom: "auto", marginLeft:"20px", padding: '10px 30px', height: '100%'}}>Send</Button>
                           </div>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import dataReducer from "../store/reducers";
 import { displayComment, newComment } from "./../api/DashboardFunction";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 class Comment extends Component {
     constructor() {
@@ -79,7 +81,8 @@ class Comment extends Component {
                         {commentData && commentData.message.map((data, index) => (
                             data.coming_time != '' ? (
                                 <li className="chat-left" key={index}>
-                                    <div className="chat-avatar">                     
+                                    <div className="chat-avatar">  
+                                        <AccountCircleIcon fontSize="large"/>                       
                                         <div className="chat-name">{data.to_username}</div>
                                     </div>
                                     <div className="chat-avatar">                     
@@ -101,7 +104,8 @@ class Comment extends Component {
                                     <div className="chat-avatar">                         
                                         <div className="chat-name">{ data.to_username}</div>
                                     </div>
-                                    <div className="chat-avatar">                     
+                                    <div className="chat-avatar">   
+                                        <AccountBoxIcon fontSize="large"/>                    
                                         <div className="chat-name">{data.account_username}</div>
                                     </div>
                                 </li>

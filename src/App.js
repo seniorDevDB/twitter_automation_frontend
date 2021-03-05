@@ -10,6 +10,7 @@ import Navbar from "./pages/Navbar";
 import Login from "./pages/Login";
 import CommentInbox from './pages/CommentInbox';
 import DmInbox from './pages/DmInbox';
+import Report from './pages/Report';
 
 import {} from "./api/Socket"
 
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/comment/:account/:username/:num/:profile" component={Comment}></Route>
         <Route exact path="/comment-inbox" component={CommentInbox}></Route>
         <Route exact path="/dm-inbox" component={DmInbox}></Route>
+        <Route exact path="/report" component={Report}></Route>
       </div>
     </Router>
   );
