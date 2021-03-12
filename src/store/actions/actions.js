@@ -7,6 +7,7 @@ export const DM_NOTIFICATION = "DM_NOTIFICATION";
 export const COMMENT_NOTIFICATION = "COMMENT_NOTIFICATION";
 export const MSG_SUCCESS = "MSG_SUCCESS";
 export const COMMENT_SUCCESS = "COMMENT_SUCCESS";
+export const SET_BOT = "SET_BOT";
 
 export function fetchDataSuccess(data) {
     return {
@@ -65,6 +66,13 @@ export function sendMsgSuccess(data) {
 export function sendCommentSuccess(data) {
     return {
         type: COMMENT_SUCCESS,
+        payload: data
+    }
+}
+
+export function setSelectedBot(data) {
+    return {
+        type: SET_BOT,
         payload: data
     }
 }

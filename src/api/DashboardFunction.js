@@ -1,7 +1,7 @@
 import axios from "axios";
-import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess } from "./../store/actions/actions";
+import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
+const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -16,20 +16,29 @@ export function getAllData() {
     }
 }
 
+// export function getReport(data) {
+//     return dispatch => {
+//         axiosInstance.post("/getReport", {
+//             bot_number: data
+//         }).then((res) => {
+//             console.log("here is response", res)
+
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//         });
+//     }
+// }
+
 export const startBot = (data) => {
     console.log("start bot")
     return axiosInstance
         .post("/start_bot", {
-            bot1_msg1: data.bot1_msg1,
-            bot1_msg2: data.bot1_msg2,
-            bot1_comment_msg: data.bot1_comment_msg,
-            bot2_msg1: data.bot2_msg1,
-            bot2_msg2: data.bot2_msg2,
-            bot2_comment_msg: data.bot2_comment_msg,
-            bot3_msg1: data.bot3_msg1,
-            bot3_msg2: data.bot3_msg2,
-            bot3_comment_msg: data.bot3_comment_msg,
-            username_num: data.username_num,
+            bot_msg1: data.bot_msg1,
+            bot_msg2: data.bot_msg2,
+            bot_comment_msg: data.bot_comment_msg,
+            lead_number: data.username_num,
+            bot_number:data.bot_number,
             status: data.status
         })
         .then((res) => {
@@ -45,7 +54,8 @@ export const endBot = (data) => {
     console.log("end bot")
     return axiosInstance
         .post("/end_bot", {
-            status: data.status
+            status: data.status,
+            bot_number: data.bot_number
         })
         .then((res) => {
             console.log("DATA FROM BACK", res.data);
@@ -56,10 +66,10 @@ export const endBot = (data) => {
         });
 }
 
-export const checkDM = () => {
+export const checkDM = (data) => {
     return axiosInstance
         .post("/check_dm", {
-
+            bot_number: data
         })
         .then((res) => {
             console.log(res.data)
@@ -70,10 +80,10 @@ export const checkDM = () => {
         });
 }
 
-export const checkFollow = () => {
+export const checkFollow = (data) => {
     return axiosInstance
         .post("/check_follow", {
-
+            bot_number: data
         })
         .then((res) => {
             console.log(res.data)
@@ -84,10 +94,10 @@ export const checkFollow = () => {
         });
 }
 
-export const checkComment = () => {
+export const checkComment = (data) => {
     return axiosInstance
         .post("/check_comment", {
-
+            bot_number: data
         })
         .then((res) => {
             console.log(res.data)
@@ -202,6 +212,10 @@ export const clearNotification = (data) => {
         return dispatch => dispatch(commentNotify(false))
     }
     
+}
+
+export const setBot = (data) => {
+    return dispatch => dispatch(setSelectedBot(data))
 }
 
 export const updateIsMarked = (data) => {

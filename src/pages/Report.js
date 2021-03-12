@@ -60,69 +60,59 @@ class CommentInbox extends Component {
         this.props.getAllData();
     }
 
-    handleRowHover = (event, propsData) => {
-        this.setState({hoveringOver: propsData.index});
+    downloadCSV(csv, filename) {
+        let csvFile;
+        let downloadLink;
+    
+        // CSV file
+        csvFile = new Blob([csv], {type: "text/csv"});
+    
+        // Download link
+        downloadLink = document.createElement("a");
+    
+        // File name
+        downloadLink.download = filename;
+    
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+    
+        // Hide download link
+        downloadLink.style.display = "none";
+    
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
+    
+        // Click download link
+        downloadLink.click();
     }
 
-    handleRowHoverLeave = (event, propsData) => {
-        this.setState({hoveringOver: ""});
-    }
-
-    isMarkAsRead = (row) => {
-        console.log("72", row)
-        return row.mark_as_read == false;
-    }
-
-    handleDisplayMessage = (event, data) => {
-        console.log("I am dat!!", data);
-        // udpate is marked
-        const info = {
-            account_username: data.account_username,
-            to_username: data.to_username,
-            bot_number: data.bot_number,
-            profile: data.profile,
-            coming_time: data.coming_time,
-            content: data.content
+    exportToCSV() {
+        let csv = [];
+        let titles = [
+            "Bot Number",
+            "Number of Leads",
+            "Sent DM",
+            "Expired DM",
+            "Spintax1 Reply",
+            "Spintax2 Reply",
+            "Sent Comment",
+            "Expired Comment",
+            "Comment Reply",
+            "Follow",
+            "Follow Back"
+        ];
+        csv.push(titles.join(","));
+        for( let i = 0; i < this.props.report.length; i ++ ) {
+            let data = this.props.report[i];
+            let row = [data.bot_number, data.lead_number, data.sent_dm, data.expired_dm,data.spintax1_reply, data.spintax2_reply,data.comment, data.expired_comment,data.comment_reply, data.follow, data.follow_back];
+            csv.push(row.join(','));
         }
-        updateIsMarked(info).then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            } 
-        })
-
-        localStorage.setItem('previous_content', data.content);
-        localStorage.setItem('link', data.link)
-        this.props.history.push(`/comment/${data.account_username}/${data.to_username}/${data.bot_number}/${data.profile}`)
-    }
-
-    dateCompare = (firstDate, secondDate) => {
-        const date1 = new Date(firstDate);
-        const date2 = new Date(secondDate);
-
-        if (date1 > date2)
-            return -1;
-
-        if (date1 < date2)
-            return 1;
-
-        return 0;
+        this.downloadCSV(csv.join("\n"), "report.csv");
     }
 
     render() {
-        console.log("ok",this.props.reply_comment)
-        const reply_comment = this.props.reply_comment;
-        const { hoveringOver } = this.state;
-
-        if (reply_comment) {
-            reply_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
-
-            for (var i = 0 ; i < reply_comment.length; i ++) {
-                const save_time = new Date(reply_comment[i].save_time);
-                console.log("I am tim!!!", save_time);
-                reply_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
-            }
-
-        }
+        const report = this.props.report;
+        // this.exportToCSV();
 
         return(
             <div className="table">
@@ -151,20 +141,20 @@ class CommentInbox extends Component {
                   }}
                     icons={tableIcons}
                     columns={[
-                        { title: "Username", field: "to_username", width: "20%" },
-                        { title: "Account Username", field: "account_username", width: "20%" },
-                        { title: "Coming Time", field: "coming_time"},
-                        { title: "Message Content", field: "content"},
-                        { title: "Save Time", field: "save_time"},
-                        // { title: "Link", field: "link"},
-                        { title: "Bot Number", field: "bot_number"},
-                        { title: "Browser Number", field: "profile" },
-                        { title: "ID", field: "_id"}
+                        { title: "Bot Number", field: "bot_number", width: "20%" },
+                        { title: "Number of Leads", field: "lead_number", width: "20%" },
+                        { title: "Sent DM", field: "sent_dm"},
+                        { title: "Expired DM", field: "expired_dm"},
+                        { title: "Spintax1 Reply", field: "spintax1_reply"},
+                        { title: "Spintax2 Reply", field: "spintax2_reply"},
+                        { title: "Sent Comment", field: "sent_comment"},
+                        { title: "Expired Comment", field: "expired_comment"},
+                        { title: "Comment Reply", field: "comment_reply" },
+                        { title: "Follow", field: "follow"},
+                        { title: "Follow Back", field: "follow_back"}
                     ]}
-                    data={reply_comment}
+                    data={report}
                     options={{
-                        // paging: false,
-                        // toolbar: false,
                         pageSizeOptions: [10, 25, 50],
                         pageSize: 10,
                         headerStyle: {
@@ -173,34 +163,21 @@ class CommentInbox extends Component {
                           fontSize: "17px",
                           fontWeight: "bold"
                         },
-                        rowStyle: rowData => ({
-                            backgroundColor: this.isMarkAsRead(rowData) ? "rgba(255,255,255,0.902)" : "rgba(242,245,245,0.8)",
-                            fontWeight: this.isMarkAsRead(rowData) ? "bold" : "",
-                            boxShadow: rowData.tableData.id === hoveringOver ? 'inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)' : ''
-                        }),
                         tableLayout: "fixed"
                     }}
-                    title=""
+                    actions={[
+                        {
+                          icon: tableIcons.Export,
+                          tooltip: "Export To CSV",
+                          isFreeAction: true,
+                          onClick: () => {
+                            this.exportToCSV();
+                          }
+                        }
+                      ]}
                     components={{
-                        Row: props => {
-                            return (
-                            <MTableBodyRow
-                                {...props}
-                                onMouseEnter={e => this.handleRowHover(e, props)}
-                                onMouseLeave={e => this.handleRowHoverLeave(e, props)}
-                            />
-                            );
-                        },
                     }}
-                    onRowClick = {this.handleDisplayMessage}
-                    // actions={[
-                    //     {
-                    //     icon: View,
-                    //     tooltip: "View",
-                    //     onClick: (event, rowData) =>
-                    //         {this.handleDisplayComment(rowData)}
-                    //     }
-                    // ]}
+                    title="Report"
                 />
             </div>
         )
@@ -208,7 +185,8 @@ class CommentInbox extends Component {
 }
 
 const mapStateToProps = state => ({
-    reply_comment: state.data.reply_comment,
+    report: state.data.report,
+    bot_number: state.bot
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -1,4 +1,4 @@
-import { FETCH_DATA_FAILED, FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_MESSAGE_DATA, FETCH_COMMENT_DATA, DM_NOTIFICATION, COMMENT_NOTIFICATION, MSG_SUCCESS, COMMENT_SUCCESS} from "./../actions/actions";
+import { FETCH_DATA_FAILED, FETCH_DATA_PENDING, FETCH_DATA_SUCCESS, FETCH_MESSAGE_DATA, FETCH_COMMENT_DATA, DM_NOTIFICATION, COMMENT_NOTIFICATION, MSG_SUCCESS, COMMENT_SUCCESS, SET_BOT} from "./../actions/actions";
 
 export default function dataReducer(state = {}, action) {
     let newState = { ...state };
@@ -25,6 +25,9 @@ export default function dataReducer(state = {}, action) {
             return newState;
         case FETCH_COMMENT_DATA:
             newState.commentData = action.payload;
+            return newState;
+        case SET_BOT:
+            newState.bot = action.payload;
             return newState;
         case DM_NOTIFICATION:
             newState.dmNotification = action.payload;

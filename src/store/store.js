@@ -13,6 +13,7 @@ let initialState = {
     msgData: {},
     dmNotification: false,
     commentNotification: false,
+    bot: 1,
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,9 +18,9 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import MenuIcon from '@material-ui/icons/Menu';
-import { Button } from 'react-bootstrap';
+import { Button, DropdownButton,Dropdown } from 'react-bootstrap';
 
-import { checkDM, checkComment, checkFollow, clearNotification} from "./../api/DashboardFunction";
+import { checkDM, checkComment, checkFollow, clearNotification, setBot} from "./../api/DashboardFunction";
 
 import { useHistory } from "react-router";
 
@@ -121,10 +121,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotification, commentNotification, clearNotification}) => {
+const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotification, commentNotification, clearNotification, setBot}) => {
     const classes = useStyles();
     const token = localStorage.usertoken;
     const history = useHistory();
+    const [title, setTitle] = useState("Bot List");
     
 
     function login (){
@@ -151,43 +152,35 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
         history.push({pathname: '/dm-inbox'});
     }
 
+    function goToReport() {
+      history.push({pathname: '/report'})
+    }
+
     function GoToHome() {
         window.location.href = "/";
     }
 
-    function handleCheckDM () {
-        console.log("check dm clicked")
-        checkDM().then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            } 
-        })
+    function handleBot(botIndex) {
+      console.log("bot selected:", botIndex)
+      setTitle(`Bot ${botIndex}`)
+      //here update the redux state
+      setBot(botIndex)
     }
 
-    function handleCheckFollow () {
-        console.log("check follow clicked")
-        checkFollow().then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            } 
-        })
-    }
-
-    function handleCheckComment () {
-        checkComment().then((res) => {
-            if (res.code == "failed") {
-                alert(res.message)
-            }
-        })
+    const botDropDown = [];
+    for (let i = 0; i < 10; i++) {
+      botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i+1) }>Bot{i+1}</Dropdown.Item>)
     }
 
     return (
         <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} style={{backgroundColor: "darkgreen"}}>
             <Toolbar className={classes.toolbar}>
-
-          
             {localStorage.usertoken ? 
-              <div>
+              <div style={{width:"100%"}}>
+                <DropdownButton className={`${classes.menu} float-left`} id="bot_list" title={title}>
+                  <Dropdown.ItemText>Select The Bot!</Dropdown.ItemText>
+                  {botDropDown}
+                </DropdownButton>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ GoToHome }>
                   <HomeIcon fontSize="large"/>
                 </Typography>
@@ -214,17 +207,14 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                     !dmNotification && <MessageIcon fontSize="large"/>
                 }
                 </Typography>
-                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ dmReply }>
+                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ goToReport }>
                   <AssessmentIcon fontSize="large"/>
                 </Typography>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckDM} disabled>Check Coming DM</Button>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckComment} disabled>Check Comment Reply</Button>
-                <Button className={`${classes.menu} float-left`} variant="primary" onClick = {handleCheckFollow} disabled>Check Follow Back</Button>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ logout }>
                   <ExitToAppIcon fontSize="large"/>
                 </Typography>
               </div> :
-              <div>
+              <div style={{width:"100%"}}>
                 {/* <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ () => { window.location.href = "/register"} }>
                   Signup
                 </Typography> */}
@@ -245,7 +235,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    clearNotification
+    clearNotification,
+    setBot
 }, dispatch);
 
 export default connect(
