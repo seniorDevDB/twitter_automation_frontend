@@ -111,15 +111,15 @@ class DmInbox extends Component {
         console.log("ok",this.props.new_message)
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
+        let filtered_message = new_message.filter((item) => item.bot_number === this.props.bot_number)
 
+        if (filtered_message) {
+            filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
 
-        if (new_message) {
-            new_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
-
-            for (var i = 0 ; i < new_message.length; i ++) {
-                const save_time = new Date(new_message[i].save_time);
+            for (var i = 0 ; i < filtered_message.length; i ++) {
+                const save_time = new Date(filtered_message[i].save_time);
                 console.log("I am tim!!!", save_time);
-                new_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
+                filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
             }
         }
 
@@ -136,7 +136,7 @@ class DmInbox extends Component {
                         { title: "Browser Number", field: "profile" },
                         { title: "ID", field: "_id" },
                     ]}
-                    data={new_message}
+                    data={filtered_message}
                     options={{
                         // paging: false,
                         // toolbar: false,
@@ -184,6 +184,7 @@ class DmInbox extends Component {
 
 const mapStateToProps = state => ({
     new_message: state.data.new_message,
+    bot_number: state.bot
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

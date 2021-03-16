@@ -26,6 +26,7 @@ import Search from '@material-ui/icons/Search';
 import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
+import { Height } from "@material-ui/icons";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -112,16 +113,15 @@ class CommentInbox extends Component {
         console.log("ok",this.props.reply_comment)
         const reply_comment = this.props.reply_comment;
         const { hoveringOver } = this.state;
+        let filtered_comment = reply_comment.filter((item) => item.bot_number === this.props.bot_number)
 
-        if (reply_comment) {
-            reply_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
-
-            for (var i = 0 ; i < reply_comment.length; i ++) {
-                const save_time = new Date(reply_comment[i].save_time);
+        if (filtered_comment) {
+            filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
+            for (var i = 0 ; i < filtered_comment.length; i ++) {
+                const save_time = new Date(filtered_comment[i].save_time);
                 console.log("I am tim!!!", save_time);
-                reply_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
+                filtered_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
             }
-
         }
 
         return(
@@ -137,6 +137,7 @@ class CommentInbox extends Component {
                               bottom: 0,
                               left: 0,
                               width: '100%',
+                              height:'100%',
                             }}
                           >
                             <tbody>
@@ -161,7 +162,7 @@ class CommentInbox extends Component {
                         { title: "Browser Number", field: "profile" },
                         { title: "ID", field: "_id"}
                     ]}
-                    data={reply_comment}
+                    data={filtered_comment}
                     options={{
                         // paging: false,
                         // toolbar: false,
@@ -209,6 +210,7 @@ class CommentInbox extends Component {
 
 const mapStateToProps = state => ({
     reply_comment: state.data.reply_comment,
+    bot_number: state.bot
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

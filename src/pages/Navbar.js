@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
+import Tooltip from '@material-ui/core/Tooltip';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -182,17 +183,21 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                   {botDropDown}
                 </DropdownButton>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ GoToHome }>
-                  <HomeIcon fontSize="large"/>
+                  <Tooltip title="Home">
+                    <HomeIcon fontSize="large"/>
+                  </Tooltip>
                 </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ commentReply }>
                 {
                     commentNotification && 
                     <Badge color="error" badgeContent=" " variant="dot">
-                        <CommentIcon fontSize="large"/>
+                        <Tooltip title="Comment">
+                          <CommentIcon fontSize="large"/>
+                        </Tooltip>
                     </Badge>
                 }
                 {
-                    !commentNotification && <CommentIcon fontSize="large"/>
+                    !commentNotification && <Tooltip title="Comment"><CommentIcon fontSize="large"/></Tooltip>
                 }
                 
                 </Typography>
@@ -200,18 +205,24 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                 {
                     dmNotification && 
                     <Badge color="error" badgeContent=" " variant="dot">
+                      <Tooltip title="DM">
                          <MessageIcon fontSize="large"/>
+                      </Tooltip>
                     </Badge>
                 }
                 {
-                    !dmNotification && <MessageIcon fontSize="large"/>
+                    !dmNotification && <Tooltip title="DM"><MessageIcon fontSize="large"/></Tooltip>
                 }
                 </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ goToReport }>
-                  <AssessmentIcon fontSize="large"/>
+                  <Tooltip title="Report">
+                    <AssessmentIcon fontSize="large"/>
+                    </Tooltip>
                 </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ logout }>
-                  <ExitToAppIcon fontSize="large"/>
+                  <Tooltip title="Logout">
+                    <ExitToAppIcon fontSize="large"/>
+                    </Tooltip>
                 </Typography>
               </div> :
               <div style={{width:"100%"}}>
