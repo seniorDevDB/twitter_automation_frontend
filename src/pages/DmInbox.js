@@ -108,11 +108,16 @@ class DmInbox extends Component {
     }
 
     render() {
-        console.log("ok",this.props.new_message)
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
-        let filtered_message = new_message.filter((item) => item.bot_number === this.props.bot_number)
-
+        let filtered_message 
+        if (new_message != undefined && this.props.bot_number == 0){
+            filtered_message = new_message
+        }
+        else if (new_message != undefined && this.props.bot_number != 0){
+            filtered_message= new_message.filter((item) => item.bot_number === this.props.bot_number)
+        }
+        
         if (filtered_message) {
             filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
 
@@ -121,7 +126,15 @@ class DmInbox extends Component {
                 console.log("I am tim!!!", save_time);
                 filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
             }
+            //show only last message from the same user
+            for (var i = 0 ; i < filtered_message.length -1; i ++) {
+                if (filtered_message[i].username == filtered_message[i+1].username) {
+                    filtered_message.splice(i, 1)
+                    i = i-1
+                }
+            }
         }
+        
 
         return(
             <div className="table">

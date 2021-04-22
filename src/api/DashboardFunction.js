@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
+const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -38,6 +38,7 @@ export const startBot = (data) => {
             bot_msg2: data.bot_msg2,
             bot_comment_msg: data.bot_comment_msg,
             lead_number: data.username_num,
+            lead_type: data.lead_type,
             bot_number:data.bot_number,
             status: data.status
         })

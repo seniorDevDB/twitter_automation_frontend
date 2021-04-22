@@ -110,17 +110,27 @@ class CommentInbox extends Component {
     }
 
     render() {
-        console.log("ok",this.props.reply_comment)
         const reply_comment = this.props.reply_comment;
         const { hoveringOver } = this.state;
-        let filtered_comment = reply_comment.filter((item) => item.bot_number === this.props.bot_number)
-
+        let filtered_comment
+        if (reply_comment != undefined && this.props.bot_number == 0){
+            filtered_comment = reply_comment
+        }
+        else if (reply_comment != undefined && this.props.bot_number != 0){
+            filtered_comment = reply_comment.filter((item) => item.bot_number === this.props.bot_number)
+        }
+        
         if (filtered_comment) {
             filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
             for (var i = 0 ; i < filtered_comment.length; i ++) {
                 const save_time = new Date(filtered_comment[i].save_time);
                 console.log("I am tim!!!", save_time);
                 filtered_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
+            }
+            for (var i = 0; i < filtered_comment.length; i++) {
+                if (filtered_comment[i].to_username == "@peachlyapp") {
+                    filtered_comment.splice(i, 1)
+                }
             }
         }
 

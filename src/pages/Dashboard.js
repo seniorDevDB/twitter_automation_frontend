@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Button } from 'react-bootstrap'; 
+import { Button, DropdownButton,Dropdown } from 'react-bootstrap';
 
 import './style.css'
 
@@ -22,21 +22,22 @@ class Dashboard extends Component {
             bot3_msg1: 'https://www.protectedtext.com/v3_msg1',
             bot3_msg2: 'https://www.protectedtext.com/v3_msg2',
             bot3_comment_msg: 'https://www.protectedtext.com/v_comment',
-            username_num: 100,
+            username_num: 500,
+            lead_type: "peachly",
             bot1_successful_dm: 0,
             bot1_unsuccessful_dm: 0,
             bot1_spintax1_reply: 0,
             bot2_successful_dm: 0,
             bot2_unsuccessful_dm: 0,
-            bot2_spintax1_reply: 0
+            bot2_spintax1_reply: 0,
         };
 
         this.onChange = this.onChange.bind(this);
     }
 
     async componentDidMount() {
-        console.log("real",localStorage.usertoken)
-        if (localStorage.usertoken == undefined) {
+        console.log("real",localStorage.token)
+        if (localStorage.token == undefined) {
             window.location.href = "/login"
         }
         if( this.props.success === false ) {
@@ -66,14 +67,14 @@ class Dashboard extends Component {
     }
 
     handleStartAutomation = () => {
-        console.log("start Auto")
         const bot_info = {
             bot_msg1: this.state.bot1_msg1,
             bot_msg2: this.state.bot1_msg2,
             bot_comment_msg: this.state.bot1_comment_msg,
             username_num: this.state.username_num,
             bot_number: this.props.bot_number,
-            status: "start"
+            lead_type: this.state.lead_type,
+            status: "start",
         }
         startBot(bot_info).then((res) => {
             if (res.code == "failed"){
@@ -121,6 +122,11 @@ class Dashboard extends Component {
         })
     }
 
+    handleLeadSelection = (data) => {
+        console.log("125", data)
+        this.setState({lead_type: data})
+    }
+
     onChange = (e) => {
         console.log("I am changed!!!!!!!!!!", e.target.value);
         this.setState({ [e.target.name]: e.target.value });
@@ -136,9 +142,15 @@ class Dashboard extends Component {
             { title: "Main Balance", field: "main_balance" },
         ];
 
+        const leadDropDown = [];
+        const lead = ["peachly", "linda"]
+        for (let i = 0; i < lead.length; i++) {
+            leadDropDown.push(<Dropdown.Item as="button" onClick={ () => this.handleLeadSelection(lead[i]) }>{lead[i]}</Dropdown.Item>)
+        }
+
         if( this.props.success === true ) {
             return (
-                <div className="container" style={{paddingTop:"65px", paddingLeft:"20px", paddingRight: "20px"}}>
+                <div className="container" style={{paddingTop:"65px", paddingLeft:"20px", paddingRight: "20px", color: "black"}}>
                     <div className="control-div">
                         <Button variant="primary" onClick = {this.handleStartAutomation}>Start Automation</Button>
                         <Button variant="primary" onClick = {this.handleEndAutomation}>End Automation</Button>
@@ -150,12 +162,20 @@ class Dashboard extends Component {
                         <b><p>Number of the Leads: </p></b>
                         <input
                             type="number"
+                            min="50"
+                            max="500"
                             className="form-control"
                             id="username_num"
                             name="username_num"
                             value={this.state.username_num}
                             style = {{width: "30%"}}
                         />
+                    </div>
+                    <div style={{marginTop:"20px"}}>
+                        <b><p>Leads Switching</p></b>
+                        <DropdownButton id="lead_selection" title="Leads">
+                            {leadDropDown}
+                        </DropdownButton>
                     </div>
                     <div className="row">
                         <div className="col-md-4 col-sm-4 spintaxTextArea">

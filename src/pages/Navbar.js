@@ -10,6 +10,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { Link } from 'react-router-dom';
+
 import IconButton from '@material-ui/core/IconButton';
 
 import HomeIcon from '@material-ui/icons/Home';
@@ -17,6 +19,8 @@ import CommentIcon from '@material-ui/icons/Comment';
 import MessageIcon from '@material-ui/icons/Message';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import StorageIcon from '@material-ui/icons/Storage';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import { Button, DropdownButton,Dropdown } from 'react-bootstrap';
@@ -124,20 +128,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotification, commentNotification, clearNotification, setBot}) => {
     const classes = useStyles();
-    const token = localStorage.usertoken;
+    const token = localStorage.token;
     const history = useHistory();
     const [title, setTitle] = useState("Bot List");
-    
-
-    function login (){
-      window.location.href = "/login";
-    }
 
     function logout () {
       console.log("logout")
       //call api to update login status
-      const token = localStorage.usertoken;
-      console.log("tt", token)
+      const token = localStorage.token;
       localStorage.clear();
       window.location.href = "/login";
     }
@@ -157,26 +155,45 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
       history.push({pathname: '/report'})
     }
 
+    function goToLead() {
+      history.push({pathname: '/lead'})
+    }
+
     function GoToHome() {
-        window.location.href = "/";
+        history.push({pathname: '/dashboard'})
+    }
+
+    function GoToTwitterAccount() {
+      history.push({pathname: 'twitter_account'})
     }
 
     function handleBot(botIndex) {
       console.log("bot selected:", botIndex)
-      setTitle(`Bot ${botIndex}`)
+      if (botIndex == 0){
+        setTitle(`All Bots`)
+      }
+      else {
+        setTitle(`Bot ${botIndex}`)
+      }
       //here update the redux state
       setBot(botIndex)
     }
 
     const botDropDown = [];
-    for (let i = 0; i < 10; i++) {
-      botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i+1) }>Bot{i+1}</Dropdown.Item>)
+    for (let i = 0; i < 6; i++) {
+      if (i == 0){
+        botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i) }>All Bots</Dropdown.Item>)
+      }
+      else{
+        botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i) }>Bot{i}</Dropdown.Item>)
+      }
+      
     }
 
     return (
-        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} style={{backgroundColor: "darkgreen"}}>
+        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)} style={{backgroundColor: "#42389d"}}>
             <Toolbar className={classes.toolbar}>
-            {localStorage.usertoken ? 
+            {localStorage.token ? 
               <div style={{width:"100%"}}>
                 <DropdownButton className={`${classes.menu} float-left`} id="bot_list" title={title}>
                   <Dropdown.ItemText>Select The Bot!</Dropdown.ItemText>
@@ -219,6 +236,16 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                     <AssessmentIcon fontSize="large"/>
                     </Tooltip>
                 </Typography>
+                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ GoToTwitterAccount }>
+                  <Tooltip title="Twitter Account">
+                    <AccountBoxIcon fontSize="large"/>
+                  </Tooltip>
+                </Typography>
+                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ goToLead }>
+                  <Tooltip title="Leads">
+                    <StorageIcon fontSize="large"/>
+                  </Tooltip>
+                </Typography>
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ logout }>
                   <Tooltip title="Logout">
                     <ExitToAppIcon fontSize="large"/>
@@ -226,12 +253,12 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                 </Typography>
               </div> :
               <div style={{width:"100%"}}>
-                {/* <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ () => { window.location.href = "/register"} }>
+                <Link to="join"><Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" >
                   Signup
-                </Typography> */}
-                  <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ login }>
+                </Typography></Link>
+                <Link to="login"><Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit">
                   Login
-                </Typography>
+                </Typography></Link>
               </div>
           }
            </Toolbar>

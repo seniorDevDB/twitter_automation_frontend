@@ -1,3 +1,13 @@
+.App {
+    min-height: 100vh;
+    font-size: 20px;
+    max-width: 100vw;
+    /* background-color: #42389d; */
+    text-align: center;
+    overflow-x: hidden;
+    color: white;
+  }
+
 .control-div{
     margin-top: 30px;
     text-align: center;
@@ -25,6 +35,79 @@
 tr:hover {
     cursor: pointer;
 }
+
+.landing {
+    margin-top: 2em;
+}
+/* Login Page */
+.login-page {
+    padding: 1em;
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, 0.2);
+    max-width: 550px;
+    margin: auto;
+    margin-top: 4em;
+    animation: lgform 1s;
+  }
+  
+  .login-page .title {
+    font-size: 1.7em;
+    font-weight: bold;
+  }
+  
+  .login-page .login-form {
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+    font-size: 0.8em;
+  }
+  
+  @keyframes lgform {
+    0% {
+      opacity: 0;
+      margin-top: 6em;
+    }
+    100% {
+      opacity: 1;
+      margin-top: 4em;
+    }
+  }
+  
+  .login-page .error {
+    color: red;
+    font-size: 0.6em;
+    font-weight: normal;
+  }
+
+/* join page */
+.join-page {
+    padding: 1em;
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, 0.2);
+    max-width: 550px;
+    margin: auto;
+    margin-top: 4em;
+    animation: lgform 1s;
+  }
+  
+  .join-page .title {
+    font-size: 1.7em;
+    font-weight: bold;
+  }
+  
+  .join-page .join-form {
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+    font-size: 0.8em;
+  }
+  
+  .join-page .error {
+    color: red;
+    font-size: 0.6em;
+    font-weight: normal;
+  }
+
 
 
 /* style for chat */
@@ -228,6 +311,7 @@ tr:hover {
     width: 80%;
     margin: auto;
     margin-top: 80px;
+    color: black !important;
 }
 
 #msg-content {

@@ -1,137 +1,188 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { POST } from '../api/api';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-import React, { Component } from "react";
-// import jwt_decode from "jwt-decode";
-import { login } from "../api/UserFunction";
+function Login() {
+// Router History
+  const history = useHistory();
+// Email Validation Reges
+  const validEmailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+// States
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [remember, setRemember] = useState(false);
+  const [error, setError] = useState({
+    email: '',
+    password: ''
+  });
 
-const validEmailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      error: {email: '', password: ''},
-      show: false,
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  componentDidMount() {
-    if (localStorage.signup_alert){
-      this.setState({ show: true })
+  useEffect(() => {
+    console.log(localStorage.savedUserEmail);
+    if( localStorage.savedUserEmail ) {
+      setEmail(localStorage.savedUserEmail);
+      setPassword(localStorage.savedUserPass);
+      setRemember(true);
+      setError({email: 'T', password: 'T'});
     }
-  
-  }
+  }, []);
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-    this.handleErrors(e.target.name, e.target.value);
-  }
+  const ModalClose = () => {
+    setModalShow(false);
+  };
 
-  handleErrors (field, val) {
+  const ModalConfirm = () => {
+    setModalShow(false);
+    history.push('/login');
+  }
+// Modal Show State
+  const [show, setModalShow] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalContent, setModalText] = useState("");
+// Handlers
+  const handleErrors = (field, val) => {
     switch(field) {
       case 'email':
         if( !validEmailRegex.test(val) ) {
-          this.setState({error: {...this.state.error, email: 'Email is not a valid!'}});
+          setError({...error, email: 'Email is not a valid!'});
         } else {
-          this.setState({error: {...this.state.error, email: 'T'}});
+          setError({...error, email: 'T'});
         }
         break;
       case 'password':
         if( val.length < 8 ) {
-          this.setState({error: {...this.state.error, password: 'Password must be at least 8 characters!'}});
+          setError({...error, password: 'Password must be at least 8 characters!'});
         } else {
-          this.setState({error: {...this.state.error, password: 'T'}});
+          setError({...error, password: 'T'});
         }
         break;
       default:
         break;
     }
   }
-
-  handleModalClose = () => {
-    localStorage.removeItem("signup_alert")
-    this.setState({ show: false })
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+    handleErrors('email', e.target.value);
   }
-
-  onSubmit(e) {
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+    handleErrors('password', e.target.value);
+  }
+  const onRememberChange = (e) => {
+    setRemember(e.target.checked);
+  }
+// Login
+  const onLogin = (e) => {
     e.preventDefault();
     
-    const user = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    console.log("logged clicked");
-    login(user).then((res) => {
-      if (res) {
-        if (res.error) {
-          this.setState({ error: {...this.state.error, password: 'Wrong Credential!' }});
-        } 
-        else {
-            console.log("login sueccess")
-            this.props.history.push("/");
+    let url = process.env.REACT_APP_API_URL + '/login';
+    console.log("url", url)
+    POST(url, {
+      email,
+      password,
+      remember
+    }).then(res => {
+      if( res.data.code === 'success' ) {
+        localStorage.setItem('token', res.data.token);
+        if( !res.data.admin ) {
+          console.log("loggedin")
+          window.location.href = "/dashboard";
+
+        } else {
+          history.push('/admin/dashboard');
         }
+        if( remember ) {
+          localStorage.setItem('savedUserEmail', email);
+          localStorage.setItem('savedUserPass', password);
+        }
+      } else {
+        setModalShow(true);
+        setModalTitle("Failed");
+        setModalText(res.data.message);
       }
     });
   }
+  return (
+    <div className="login-page">
+      <div className="title">
+        Welcome To Peachly Twitter
+      </div>
+      <div className="login-form">
+        <form>
+          <h3 className="text-center p-4">Sign In</h3>
 
-  render() {
-    return (
-      <div style={{height: "100vh",backgroundColor: "white"}}>
-      <div className="container" style={{paddingTop: "50px"}}>
-        <div className="jumbotron mt-5" style={{ textAlign: "center",backgroundColor: "#5dbcd2" }}>
-          <div className="row">
-            <div className="col-md-6 mt-5 mx-auto">
-              <form noValidate onSubmit={this.onSubmit}>
-                <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <div className="form-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    placeholder="Enter Email"
-                    value={this.state.email}
-                    onChange={this.onChange}
-                  />
-                </div>
-                { this.state.error.email.length > 2 && <label style={{ color: "red" }}>{this.state.error.email}</label> }
-                <div className="form-group">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    placeholder="Enter Password"
-                    value={this.state.password}
-                    onChange={this.onChange}
-                  />
-                </div>
-                { this.state.error.password.length > 2 && <label style={{ color: "red" }}>{this.state.error.password}</label> }
-                <button
-                  type="submit"
-                  className="btn btn-lg btn-primary btn-block"
-                  disabled={this.state.error.email !== "T" || this.state.error.password !== "T" }
-                >
-                  Sign in
-                </button>
-                {/* <p style={{ marginTop: "10px" }}>
-                  Don't have an account? <a href="register">Sign Up</a>
-                </p>
-                <p style={{ marginTop: "10px" }}>
-                  <a href="forgotpassword">Forgot password?</a>
-                </p> */}
-              </form>
+          <div className="form-group">
+            <label>Email address</label>
+            <input 
+              type="email" 
+              className="form-control" 
+              placeholder="Enter email" 
+              onChange={onEmailChange}
+              value={email}
+            />
+            { 
+              error.email !== "T" && 
+              <span className="error">{error.email}</span> 
+            }
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              className="form-control" 
+              placeholder="Enter password" 
+              onChange={onPasswordChange}
+              value={password}
+            />
+            { 
+              error.password !== "T" && 
+              <span className="error">{error.password}</span> 
+            }
+          </div>
+
+          <div className="form-group">
+            <div className="custom-control custom-checkbox">
+              <input 
+                type="checkbox" 
+                className="custom-control-input" 
+                id="customCheck1" 
+                onChange={onRememberChange}
+                checked={remember}
+              />
+              <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
             </div>
           </div>
-        </div>
+
+          <button 
+            type="submit" 
+            className="btn btn-primary btn-block"
+            onClick={onLogin}
+            disabled={error.email !== "T" || error.password !== "T" }
+          >
+            Submit
+          </button>
+          <p className="forgot-password text-right">
+            Forgot <Link to="/forgot">password?</Link>
+          </p>
+        </form>
       </div>
-      </div>
-    );
-  }
+      <Modal show={show} onHide={ModalClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalTitle}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {modalContent}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={ModalConfirm}>
+            Okay
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 }
 
 export default Login;
