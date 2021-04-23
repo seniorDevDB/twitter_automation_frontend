@@ -61,7 +61,7 @@ class TwitterAccount extends Component {
     }
 
     render() {
-        const used_lead = this.props.used_lead;
+        const accountData = this.props.account_data;
         // this.exportToCSV();
 
         return(
@@ -93,13 +93,16 @@ class TwitterAccount extends Component {
                     columns={[
                         { title: "Username", field: "username", width: "20%" },
                         { title: "Bot Number", field: "bot_number", width: "20%" },
+                        { title: "Status", field: "status" },
+                        { title: "Leads", field: "number_of_tried_leads"},
                         { title: "DM", field: "dm"},
-                        { title: "DM Expired", field: "dm_expired"},
+                        { title: "DM Reply", field: "dm_reply"},
                         { title: "Comment", field: "comment"},
-                        { title: "Comment Expired", field: "comment_expired"},
+                        { title: "Comment Reply", field: "comment_repy"},
                         { title: "Follow", field: "follow"},
+                        { title: "Follow Back", field: "follow_back"},
                     ]}
-                    data={used_lead}
+                    data={accountData}
                     options={{
                         pageSizeOptions: [10, 25, 50],
                         pageSize: 10,
@@ -121,7 +124,7 @@ class TwitterAccount extends Component {
 }
 
 const mapStateToProps = state => ({
-    used_lead: state.data.used_lead,
+    account_data: state.data.account,
     bot_number: state.bot
 });
 
