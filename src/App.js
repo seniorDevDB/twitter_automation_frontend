@@ -15,6 +15,7 @@ import Lead from './pages/Lead';
 import Landing from './pages/Landing';
 import Join from './pages/Join';
 import TwitterAccount from './pages/TwitterAccount';
+import TwitterAccountInfo from './pages/TwitterAccountInfo';
 
 import {} from "./api/Socket"
 
@@ -36,6 +37,7 @@ function App() {
           <Route exact path="/dm-inbox" component={DmInbox}></Route>
           <Route exact path="/report" component={Report}></Route>
           <Route exact path="/twitter_account" component={TwitterAccount}></Route>
+          <Route exact path="/account/:username/:bot_number" component={TwitterAccountInfo}></Route>
           <Route exact path="/lead" component={Lead}></Route>
         </div>
       ) : (

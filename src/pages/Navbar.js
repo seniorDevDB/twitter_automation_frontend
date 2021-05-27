@@ -164,7 +164,7 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
     }
 
     function GoToTwitterAccount() {
-      history.push({pathname: 'twitter_account'})
+      history.push({pathname: '/twitter_account'})
     }
 
     function handleBot(botIndex) {
@@ -180,7 +180,7 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
     }
 
     const botDropDown = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       if (i == 0){
         botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i) }>All Bots</Dropdown.Item>)
       }
@@ -253,9 +253,9 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                 </Typography>
               </div> :
               <div style={{width:"100%"}}>
-                <Link to="join"><Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" >
+                {/* <Link to="join"><Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" >
                   Signup
-                </Typography></Link>
+                </Typography></Link> */}
                 <Link to="login"><Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit">
                   Login
                 </Typography></Link>

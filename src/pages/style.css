@@ -6,6 +6,7 @@
     text-align: center;
     overflow-x: hidden;
     color: white;
+    font-family: 'Roboto', sans-serif;
   }
 
 .control-div{
@@ -490,3 +491,18 @@ ul {
     display: flex;
     flex-direction: column-reverse;
   }
+
+.account_info {
+    width: 100%;
+    text-align: left;
+    padding-left: 30px;
+}
+
+.ur-select {
+    margin-left: 20px;
+}
+
+.account_table td {
+    text-align: center !important;
+    margin-top: 64px;
+}

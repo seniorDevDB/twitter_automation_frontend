@@ -21,7 +21,6 @@ class Comment extends Component {
     }
 
     componentDidMount() {
-        console.log("here")
         const account_name = this.props.match.params.account
         const username = this.props.match.params.username;
         const bot_number = this.props.match.params.num;
@@ -69,6 +68,16 @@ class Comment extends Component {
     }
 
     render() {
+        {
+            if ( this.props.comment_data == null || this.props.comment_data.message[0].account_username != this.state.account_name) {
+                return (
+                    <div className="lds-grid">
+                        <div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                )
+            }
+        }
+
         console.log("msg data", this.props.comment_data)
         const commentData = this.props.comment_data
         console.log("mmm", commentData)
@@ -114,7 +123,7 @@ class Comment extends Component {
                     </ul>
 
                     <div>
-                          <div style={{display:"flex"}}>
+                          <div style={{display:"flex",marginTop:"-10px"}}>
                                 <textarea rows="3" onChange={this.onChange} id="msg-content" name= "msg_content" value={this.state.msg_content} placeholder="Type your message here..."></textarea>
                                 <Button onClick={this.sendMsg} style={{marginTop:"auto",marginBottom: "auto", marginLeft:"20px", padding: '10px 30px', height: '100%'}}>Send</Button>
                           </div>

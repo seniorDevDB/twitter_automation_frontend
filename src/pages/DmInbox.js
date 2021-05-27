@@ -108,6 +108,16 @@ class DmInbox extends Component {
     }
 
     render() {
+        {
+            if ( this.props.success !== true ) {
+                return (
+                    <div className="lds-grid">
+                        <div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                )
+            }
+        }
+
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
         let filtered_message 
@@ -121,13 +131,16 @@ class DmInbox extends Component {
         if (filtered_message) {
             filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
 
-            for (var i = 0 ; i < filtered_message.length; i ++) {
-                const save_time = new Date(filtered_message[i].save_time);
-                console.log("I am tim!!!", save_time);
-                filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
-            }
+            // for (var i = 0 ; i < filtered_message.length; i ++) {
+            //     const save_time = new Date(filtered_message[i].save_time);
+            //     console.log("I am tim!!!", save_time);
+            //     filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
+            // }
             //show only last message from the same user
             for (var i = 0 ; i < filtered_message.length -1; i ++) {
+                if (filtered_message[i].content.length >= 20){
+                    filtered_message[i].content = filtered_message[i].content.slice(0, 20) + "..."
+                }
                 if (filtered_message[i].username == filtered_message[i+1].username) {
                     filtered_message.splice(i, 1)
                     i = i-1
@@ -144,17 +157,16 @@ class DmInbox extends Component {
                         { title: "Username", field: "username" },
                         { title: "Coming Message Time", field: "coming_time"},
                         { title: "Message Content", field: "content"},
-                        { title: "Save Time", field: "save_time"},
+                        // { title: "Save Time", field: "save_time"},
                         { title: "Bot Number", field: "bot_number"},
                         { title: "Browser Number", field: "profile" },
-                        { title: "ID", field: "_id" },
                     ]}
                     data={filtered_message}
                     options={{
                         // paging: false,
                         // toolbar: false,
-                        pageSizeOptions: [10, 25, 50],
-                        pageSize: 10,
+                        pageSizeOptions: [25, 50],
+                        pageSize: 25,
                         headerStyle: {
                           backgroundColor: "#378FC3",
                           color: "#FFF",
@@ -164,7 +176,7 @@ class DmInbox extends Component {
                         rowStyle: rowData => ({
                             backgroundColor: this.isMarkAsRead(rowData) ? "rgba(255,255,255,0.902)" : "rgba(242,245,245,0.8)",
                             fontWeight: this.isMarkAsRead(rowData) ? "bold" : "",
-                            boxShadow: rowData.tableData.id === hoveringOver ? 'inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)' : ''
+                            boxShadow: rowData.tableData.id === hoveringOver ? '0px 2px 18px 0px rgba(0,0,0,0.5)' : ''
                         }),
                         tableLayout: "fixed"
                     }}
@@ -196,6 +208,7 @@ class DmInbox extends Component {
 }
 
 const mapStateToProps = state => ({
+    success: state.success,
     new_message: state.data.new_message,
     bot_number: state.bot
 });

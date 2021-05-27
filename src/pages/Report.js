@@ -146,7 +146,7 @@ class CommentInbox extends Component {
                         { title: "Sent DM", field: "sent_dm"},
                         { title: "Expired DM", field: "expired_dm"},
                         { title: "Spintax1 Reply", field: "spintax1_reply"},
-                        { title: "Spintax2 Reply", field: "spintax2_reply"},
+                        // { title: "Spintax2 Reply", field: "spintax2_reply"},
                         { title: "Sent Comment", field: "sent_comment"},
                         { title: "Expired Comment", field: "expired_comment"},
                         { title: "Comment Reply", field: "comment_reply" },

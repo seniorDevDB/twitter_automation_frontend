@@ -60,12 +60,16 @@ class TwitterAccount extends Component {
         this.props.getAllData();
     }
 
+    handleDisplayAccountInfo = (event, data) => {
+        this.props.history.push(`/account/${data.username}/${data.bot_number}`)
+    }
+
     render() {
         const accountData = this.props.account_data;
         // this.exportToCSV();
 
         return(
-            <div className="table">
+            <div className="account_table">
                 <MaterialTable
                 components={{
                     Pagination: props => {
@@ -97,8 +101,9 @@ class TwitterAccount extends Component {
                         { title: "Leads", field: "number_of_tried_leads"},
                         { title: "DM", field: "dm"},
                         { title: "DM Reply", field: "dm_reply"},
+                        { title: "DM Expired", field: "dm_expired" },
                         { title: "Comment", field: "comment"},
-                        { title: "Comment Reply", field: "comment_repy"},
+                        { title: "Comment Reply", field: "comment_reply"},
                         { title: "Follow", field: "follow"},
                         { title: "Follow Back", field: "follow_back"},
                     ]}
@@ -110,13 +115,14 @@ class TwitterAccount extends Component {
                           backgroundColor: "#378FC3",
                           color: "#FFF",
                           fontSize: "17px",
-                          fontWeight: "bold"
+                          fontWeight: "bold",
                         },
                         tableLayout: "fixed"
                     }}
                     components={{
                     }}
                     title="Lead"
+                    onRowClick = {this.handleDisplayAccountInfo}
                 />
             </div>
         )

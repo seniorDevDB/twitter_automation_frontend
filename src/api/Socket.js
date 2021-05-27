@@ -1,7 +1,8 @@
 // import { io } from "socket.io-client";
 
-// const ENDPOINT1 = 'http://18.220.66.243:3000/';
-// const ENDPOINT2 = 'http://localhost:3100/';
+// const ENDPOINT1 = 'http://209.126.64.8:3000/';
+// const ENDPOINT2 = 'http://209.126.64.16';
+
 
 // // let socket1 = io(ENDPOINT1)
 // let socket2 = io(ENDPOINT2)

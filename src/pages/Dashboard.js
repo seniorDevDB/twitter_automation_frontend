@@ -13,16 +13,10 @@ class Dashboard extends Component {
         super();
         this.state = {
             data: {},
-            bot1_msg1: 'https://www.protectedtext.com/v1_msg1',
-            bot1_msg2: 'https://www.protectedtext.com/v1_msg2',
+            bot1_msg1: 'https://www.protectedtext.com/v2_msg1',
+            bot1_msg2: 'https://www.protectedtext.com/v2_msg2',
             bot1_comment_msg: 'https://www.protectedtext.com/v_comment',
-            bot2_msg1: 'https://www.protectedtext.com/v2_msg1',
-            bot2_msg2: 'https://www.protectedtext.com/v2_msg2',
-            bot2_comment_msg: 'https://www.protectedtext.com/v_comment',
-            bot3_msg1: 'https://www.protectedtext.com/v3_msg1',
-            bot3_msg2: 'https://www.protectedtext.com/v3_msg2',
-            bot3_comment_msg: 'https://www.protectedtext.com/v_comment',
-            username_num: 500,
+            username_num: 200,
             lead_type: "peachly",
             bot1_successful_dm: 0,
             bot1_unsuccessful_dm: 0,
@@ -67,6 +61,7 @@ class Dashboard extends Component {
     }
 
     handleStartAutomation = () => {
+        console.log("bot_num", this.props.bot_number)
         const bot_info = {
             bot_msg1: this.state.bot1_msg1,
             bot_msg2: this.state.bot1_msg2,
@@ -154,65 +149,41 @@ class Dashboard extends Component {
                     <div className="control-div">
                         <Button variant="primary" onClick = {this.handleStartAutomation}>Start Automation</Button>
                         <Button variant="primary" onClick = {this.handleEndAutomation}>End Automation</Button>
-                        <Button variant="primary" onClick = {this.handleCheckDM} >Check Coming DM</Button>
-                        <Button variant="primary" onClick = {this.handleCheckComment} >Check Comment Reply</Button>
-                        <Button variant="primary" onClick = {this.handleCheckFollow} >Check Follow Back</Button>
+                        {/* <Button variant="primary" disabled onClick = {this.handleCheckDM} >Check Coming DM</Button>
+                        <Button variant="primary" disabled onClick = {this.handleCheckComment} >Check Comment Reply</Button>
+                        <Button variant="primary" disabled onClick = {this.handleCheckFollow} >Check Follow Back</Button> */}
                     </div>
                     <div style={{marginTop:"20px"}}>
                         <b><p>Number of the Leads: </p></b>
                         <input
                             type="number"
-                            min="50"
-                            max="500"
+                            // max="500"
                             className="form-control"
                             id="username_num"
                             name="username_num"
                             value={this.state.username_num}
+                            onChange={this.onChange}
                             style = {{width: "30%"}}
                         />
                     </div>
-                    <div style={{marginTop:"20px"}}>
+                    {/* <div style={{marginTop:"20px"}}>
                         <b><p>Leads Switching</p></b>
                         <DropdownButton id="lead_selection" title="Leads">
                             {leadDropDown}
                         </DropdownButton>
-                    </div>
+                    </div> */}
                     <div className="row">
                         <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot1: First Spintax:</p></b>
+                            <b><p>First Spintax:</p></b>
                             <textarea onChange={this.onChange} style={{width:"99%"}} id="bot1_msg1" name="bot1_msg1" rows="2" cols="50" value={this.state.bot1_msg1} />
                         </div>
                         <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot1: Second Spintax:</p></b>
+                            <b><p>Second Spintax:</p></b>
                             <textarea onChange={this.onChange} style={{width:"99%"}} id="bot1_msg2" name="bot1_msg2" rows="2" cols="50" value={this.state.bot1_msg2} />
                         </div>
                         <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot1: Comment:</p></b>
+                            <b><p>Comment Spintax:</p></b>
                             <textarea onChange={this.onChange} style={{width:"99%"}} id="bot1_comment_msg" name="bot1_comment_msg" rows="2" cols="50" value={this.state.bot1_comment_msg} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot2: First Spintax:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot2_msg1" name="bot2_msg1" rows="2" cols="50" value={this.state.bot2_msg1} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot2: Second Spintax:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot2_msg2" name="bot2_msg2" rows="2" cols="50" value={this.state.bot2_msg2} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot2: Comment:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot2_comment_msg" name="bot2_comment_msg" rows="2" cols="50" value={this.state.bot2_comment_msg} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot3: First Spintax:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot3_msg1" name="bot3_msg1" rows="2" cols="50" value={this.state.bot3_msg1} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot3: Second Spintax:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot3_msg2" name="bot3_msg2" rows="2" cols="50" value={this.state.bot3_msg2} />
-                        </div>
-                        <div className="col-md-4 col-sm-4 spintaxTextArea">
-                            <b><p>Bot3: Comment:</p></b>
-                            <textarea onChange={this.onChange} style={{width:"99%"}} id="bot3_comment_msg" name="bot3_comment_msg" rows="2" cols="50" value={this.state.bot3_comment_msg} />
                         </div>
                     </div>
                 </div>

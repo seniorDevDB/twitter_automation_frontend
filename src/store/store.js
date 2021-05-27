@@ -8,12 +8,12 @@ let initialState = {
     pending: false,
     success: false,
     error: false,
-    data: {
-    },
+    data: {},
     msgData: {},
+    accountInfo: {},
     dmNotification: false,
     commentNotification: false,
-    bot: 1,
+    bot: 0,
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

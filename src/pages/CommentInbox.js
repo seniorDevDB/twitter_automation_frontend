@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Button } from 'react-bootstrap';
 import MaterialTable, { Column, MTableBodyRow, TablePagination } from "material-table";
 
 import './style.css'
@@ -46,7 +45,7 @@ const tableIcons = {
     SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
-  };
+};
 
 class CommentInbox extends Component {
     constructor() {
@@ -70,7 +69,6 @@ class CommentInbox extends Component {
     }
 
     isMarkAsRead = (row) => {
-        console.log("72", row)
         return row.mark_as_read == false;
     }
 
@@ -86,7 +84,7 @@ class CommentInbox extends Component {
             content: data.content
         }
         updateIsMarked(info).then((res) => {
-            if (res.code == "failed"){
+            if (res.code != "success"){
                 alert(res.message)
             } 
         })
@@ -110,6 +108,16 @@ class CommentInbox extends Component {
     }
 
     render() {
+        {
+            if ( this.props.success !== true ) {
+                return (
+                    <div className="lds-grid">
+                        <div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                )
+            }
+        }
+
         const reply_comment = this.props.reply_comment;
         const { hoveringOver } = this.state;
         let filtered_comment
@@ -119,18 +127,22 @@ class CommentInbox extends Component {
         else if (reply_comment != undefined && this.props.bot_number != 0){
             filtered_comment = reply_comment.filter((item) => item.bot_number === this.props.bot_number)
         }
-        
+
         if (filtered_comment) {
             filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
-            for (var i = 0 ; i < filtered_comment.length; i ++) {
-                const save_time = new Date(filtered_comment[i].save_time);
-                console.log("I am tim!!!", save_time);
-                filtered_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
-            }
+            // for (var i = 0 ; i < filtered_comment.length; i ++) {
+            //     const save_time = new Date(filtered_comment[i].save_time);
+            //     console.log("I am tim!!!", save_time);
+            //     filtered_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
+            // }
             for (var i = 0; i < filtered_comment.length; i++) {
+                if (filtered_comment[i].content.length >= 20){
+                    filtered_comment[i].content = filtered_comment[i].content.slice(0, 20) + "..."
+                }
                 if (filtered_comment[i].to_username == "@peachlyapp") {
                     filtered_comment.splice(i, 1)
                 }
+
             }
         }
 
@@ -166,18 +178,17 @@ class CommentInbox extends Component {
                         { title: "Account Username", field: "account_username", width: "20%" },
                         { title: "Coming Time", field: "coming_time"},
                         { title: "Message Content", field: "content"},
-                        { title: "Save Time", field: "save_time"},
+                        // { title: "Save Time", field: "save_time"},
                         // { title: "Link", field: "link"},
                         { title: "Bot Number", field: "bot_number"},
                         { title: "Browser Number", field: "profile" },
-                        { title: "ID", field: "_id"}
                     ]}
                     data={filtered_comment}
                     options={{
                         // paging: false,
                         // toolbar: false,
-                        pageSizeOptions: [10, 25, 50],
-                        pageSize: 10,
+                        pageSizeOptions: [25, 50],
+                        pageSize: 25,
                         headerStyle: {
                           backgroundColor: "#378FC3",
                           color: "#FFF",
@@ -187,7 +198,7 @@ class CommentInbox extends Component {
                         rowStyle: rowData => ({
                             backgroundColor: this.isMarkAsRead(rowData) ? "rgba(255,255,255,0.902)" : "rgba(242,245,245,0.8)",
                             fontWeight: this.isMarkAsRead(rowData) ? "bold" : "",
-                            boxShadow: rowData.tableData.id === hoveringOver ? 'inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%)' : ''
+                            boxShadow: rowData.tableData.id === hoveringOver ? '0px 2px 18px 0px rgba(0,0,0,0.5)' : '',
                         }),
                         tableLayout: "fixed"
                     }}
@@ -219,6 +230,7 @@ class CommentInbox extends Component {
 }
 
 const mapStateToProps = state => ({
+    success: state.success,
     reply_comment: state.data.reply_comment,
     bot_number: state.bot
 });

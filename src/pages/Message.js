@@ -26,7 +26,12 @@ class Message extends Component {
         const profile = this.props.match.params.profile
         console.log("here is compoent", username, bot_number, profile)
         this.setState({username: username, bot_number: bot_number, profile: profile})
-        this.props.displayMsg(username);
+        const data = {
+            username: username,
+            bot_number: bot_number,
+            profile: profile
+        }
+        this.props.displayMsg(data);
     }
 
     onChange = (e) => {
@@ -59,6 +64,15 @@ class Message extends Component {
     }
 
     render() {
+        {
+            if ( this.props.msg_data == null || this.props.msg_data[0].username != this.state.username) {
+                return (
+                    <div className="lds-grid">
+                        <div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                )
+            }
+        }
         console.log("msg data", this.props.msg_data)
         const msgData = this.props.msg_data
         console.log("mmm", msgData)
@@ -98,7 +112,7 @@ class Message extends Component {
                     </ul>
 
                     <div>
-                          <div style={{display:"flex"}}>
+                          <div style={{marginTop:"-10px",display:"flex"}}>
                                 <textarea rows="3" onChange={this.onChange} id="msg-content" name= "msg_content" value={this.state.msg_content} placeholder="Type your message here..."></textarea>
                                 <Button onClick={this.sendMsg} style={{marginTop:"auto",marginBottom: "auto", marginLeft:"20px", padding: '10px 30px', height: '100%'}}>Send</Button>
                           </div>

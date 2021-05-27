@@ -3,6 +3,7 @@ export const FETCH_DATA_SUCCESS = "FETCH_DATA_SUCCESS";
 export const FETCH_DATA_FAILED = "FETCH_DATA_FAILED";
 export const FETCH_MESSAGE_DATA = "FETCH_MESSAGE_DATA";
 export const FETCH_COMMENT_DATA = "FETCH_COMMENT_DATA";
+export const FETCH_ACCOUNT_INFO = 'FETCH_ACCOUNT_INFO';
 export const DM_NOTIFICATION = "DM_NOTIFICATION";
 export const COMMENT_NOTIFICATION = "COMMENT_NOTIFICATION";
 export const MSG_SUCCESS = "MSG_SUCCESS";
@@ -38,6 +39,13 @@ export function fetchMessageData(data) {
 export function fetchCommentData(data) {
     return {
         type: FETCH_COMMENT_DATA,
+        payload: data
+    };
+}
+
+export function fetchAccountInfo(data) {
+    return {
+        type: FETCH_ACCOUNT_INFO,
         payload: data
     };
 }
