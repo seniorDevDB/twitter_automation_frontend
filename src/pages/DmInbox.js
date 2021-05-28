@@ -86,11 +86,8 @@ class DmInbox extends Component {
             coming_time: data.coming_time,
             content: data.content
         }
-        updateIsMarkedDm(info).then((res) => {
-            if (res.code == "failed"){
-                alert(res.message)
-            } 
-        })
+        this.props.updateIsMarkedDm(info)
+
         
         //save the link into localstorage
         localStorage.setItem('dm_link', data.link)
@@ -119,7 +116,7 @@ class DmInbox extends Component {
             )
         }
 
-        console.log("her", this.props.new_message)
+        console.log("here", this.props.new_message)
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
         let filtered_message 
@@ -220,6 +217,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     getAllData,
     getDmData,
+    updateIsMarkedDm,
 }, dispatch);
 
 export default connect(

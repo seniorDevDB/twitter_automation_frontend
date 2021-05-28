@@ -1,7 +1,7 @@
 import axios from "axios";
-import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo, fetchDmInboxDataSuccess,fetchCommentInboxDataSuccess } from "./../store/actions/actions";
+import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo, fetchDmInboxDataSuccess,fetchCommentInboxDataSuccess, updateMarkedDM, updateMarkedComment } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
+const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -261,10 +261,10 @@ export const setBot = (data) => {
     return dispatch => dispatch(setSelectedBot(data))
 }
 
-export const updateIsMarked = (data) => {
-    console.log("data", data)
-    return axiosInstance
-        .post("/update_is_marked", {
+export const updateIsMarkedComment = (data) => {
+
+    return dispatch => {
+        axiosInstance.post("/update_is_marked", {
             account_username: data.account_username,
             to_username: data.to_username,
             bot_number: data.bot_number,
@@ -273,18 +273,21 @@ export const updateIsMarked = (data) => {
             content: data.content
         })
         .then((res) => {
-            console.log(res.data)
-            return res.data;
+            if (res.data.code == "success"){
+                dispatch(updateMarkedComment(data))
+            }
         })
         .catch((err) => {
             console.log(err);
         });
+    }
+
 }
 
 export const updateIsMarkedDm = (data) => {
-    console.log("datadddd", data)
-    return axiosInstance
-        .post("/update_is_marked_dm", {
+
+    return dispatch => {
+        axiosInstance.post("/update_is_marked_dm", {
             account_username: data.account_username,
             username: data.username,
             bot_number: data.bot_number,
@@ -293,10 +296,14 @@ export const updateIsMarkedDm = (data) => {
             content: data.content
         })
         .then((res) => {
-            console.log(res.data)
-            return res.data;
+            if (res.data.code == "success"){
+                dispatch(updateMarkedDM(data))
+            }
+
         })
         .catch((err) => {
             console.log(err);
         });
+    }
+
 }

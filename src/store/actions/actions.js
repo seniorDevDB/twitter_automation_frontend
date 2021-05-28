@@ -12,6 +12,9 @@ export const SET_BOT = "SET_BOT";
 export const FETCH_DM_INBOX_DATA_SUCCESS = "FETCH_DM_INBOX_DATA_SUCCESS";
 export const FETCH_COMMENT_INBOX_DATA_SUCCESS = "FETCH_COMMENT_INBOX_DATA_SUCCESS";
 
+export const UPDATE_MARKED_DM = "UPDATE_MARKED_DM";
+export const UPDATE_MARKED_COMMENT = "UPDATE_MARKED_COMMENT";
+
 export function fetchDataSuccess(data) {
     return {
         type: FETCH_DATA_SUCCESS,
@@ -97,6 +100,20 @@ export function sendCommentSuccess(data) {
 export function setSelectedBot(data) {
     return {
         type: SET_BOT,
+        payload: data
+    }
+}
+
+export function updateMarkedDM(data) {
+    return {
+        type: UPDATE_MARKED_DM,
+        payload: data
+    }
+}
+
+export function updateMarkedComment(data) {
+    return {
+        type: UPDATE_MARKED_COMMENT,
         payload: data
     }
 }

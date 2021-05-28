@@ -24,7 +24,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getAllData, updateIsMarked, getCommentData} from "./../api/DashboardFunction";
+import { getAllData, updateIsMarkedComment, getCommentData} from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -84,11 +84,7 @@ class CommentInbox extends Component {
             coming_time: data.coming_time,
             content: data.content
         }
-        updateIsMarked(info).then((res) => {
-            if (res.code != "success"){
-                alert(res.message)
-            } 
-        })
+        this.props.updateIsMarkedComment(info)
 
         localStorage.setItem('previous_content', data.content);
         localStorage.setItem('link', data.link)
@@ -237,7 +233,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     getAllData,
-    getCommentData
+    getCommentData,
+    updateIsMarkedComment,
 }, dispatch);
 
 export default connect(
