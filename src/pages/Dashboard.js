@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 
 import { Button, DropdownButton,Dropdown } from 'react-bootstrap';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import './style.css'
 
 import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification, checkFollow } from "./../api/DashboardFunction";
@@ -129,6 +131,7 @@ class Dashboard extends Component {
     }
 
     render() {
+
         const columns = [
             { title: "Date", field: "date" },
             { title: "Amount", field: "amount" },
@@ -142,6 +145,15 @@ class Dashboard extends Component {
         for (let i = 0; i < lead.length; i++) {
             leadDropDown.push(<Dropdown.Item as="button" onClick={ () => this.handleLeadSelection(lead[i]) }>{lead[i]}</Dropdown.Item>)
         }
+
+        if ( this.props.success !== true ) {
+            return (
+                <div className="lds-grid">
+                    <div style={{marginTop: "100px"}}><CircularProgress /></div>
+                </div>
+            )
+        }
+
 
         if( this.props.success === true ) {
             return (

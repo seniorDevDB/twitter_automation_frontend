@@ -9,6 +9,8 @@ export const COMMENT_NOTIFICATION = "COMMENT_NOTIFICATION";
 export const MSG_SUCCESS = "MSG_SUCCESS";
 export const COMMENT_SUCCESS = "COMMENT_SUCCESS";
 export const SET_BOT = "SET_BOT";
+export const FETCH_DM_INBOX_DATA_SUCCESS = "FETCH_DM_INBOX_DATA_SUCCESS";
+export const FETCH_COMMENT_INBOX_DATA_SUCCESS = "FETCH_COMMENT_INBOX_DATA_SUCCESS";
 
 export function fetchDataSuccess(data) {
     return {
@@ -27,6 +29,20 @@ export function fetchDataFailed() {
     return {
         type: FETCH_DATA_FAILED,
     };
+}
+
+export function fetchDmInboxDataSuccess(data) {
+    return {
+        type: FETCH_DM_INBOX_DATA_SUCCESS,
+        payload: data
+    }
+}
+
+export function fetchCommentInboxDataSuccess(data) {
+    return {
+        type: FETCH_COMMENT_INBOX_DATA_SUCCESS,
+        payload: data
+    }
 }
 
 export function fetchMessageData(data) {

@@ -23,7 +23,7 @@ import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
-import View from "@material-ui/icons/Visibility";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
 
@@ -57,12 +57,20 @@ class Lead extends Component {
     }
 
     async componentDidMount() {
-        this.props.getAllData();
+      if( this.props.success === true ) return ;
+      this.props.getAllData();
     }
 
     render() {
         const used_lead = this.props.used_lead;
         // this.exportToCSV();
+        if ( this.props.success !== true ) {
+          return (
+              <div className="lds-grid">
+                  <div style={{marginTop: "100px"}}><CircularProgress /></div>
+              </div>
+          )
+        }
 
         return(
             <div className="table">
@@ -121,6 +129,7 @@ class Lead extends Component {
 }
 
 const mapStateToProps = state => ({
+    success: state.success,
     used_lead: state.data.used_lead,
     bot_number: state.bot
 });

@@ -22,10 +22,9 @@ import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
-import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
-import { Height } from "@material-ui/icons";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { getAllData, updateIsMarked, getCommentData} from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -57,6 +56,8 @@ class CommentInbox extends Component {
     }
 
     async componentDidMount() {
+        if( this.props.success === true ) return ;
+        // this.props.getCommentData();
         this.props.getAllData();
     }
 
@@ -108,15 +109,14 @@ class CommentInbox extends Component {
     }
 
     render() {
-        {
-            if ( this.props.success !== true ) {
-                return (
-                    <div className="lds-grid">
-                        <div></div><div></div><div></div><div></div><div></div><div></div>
-                    </div>
-                )
-            }
+        if ( this.props.success !== true ) {
+            return (
+                <div className="lds-grid">
+                    <div style={{marginTop: "100px"}}><CircularProgress /></div>
+                </div>
+            )
         }
+
 
         const reply_comment = this.props.reply_comment;
         const { hoveringOver } = this.state;
@@ -129,7 +129,7 @@ class CommentInbox extends Component {
         }
 
         if (filtered_comment) {
-            filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
+            // filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
             // for (var i = 0 ; i < filtered_comment.length; i ++) {
             //     const save_time = new Date(filtered_comment[i].save_time);
             //     console.log("I am tim!!!", save_time);
@@ -237,6 +237,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     getAllData,
+    getCommentData
 }, dispatch);
 
 export default connect(

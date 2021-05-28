@@ -9,6 +9,8 @@ let initialState = {
     success: false,
     error: false,
     data: {},
+    dmInboxData: {},
+    commentInboxData: {},
     msgData: {},
     accountInfo: {},
     dmNotification: false,

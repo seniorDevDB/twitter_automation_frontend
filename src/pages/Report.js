@@ -23,7 +23,7 @@ import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
-import View from "@material-ui/icons/Visibility";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
 
@@ -57,7 +57,8 @@ class CommentInbox extends Component {
     }
 
     async componentDidMount() {
-        this.props.getAllData();
+      if( this.props.success === true ) return ;
+      this.props.getAllData();
     }
 
     downloadCSV(csv, filename) {
@@ -113,6 +114,13 @@ class CommentInbox extends Component {
     render() {
         const report = this.props.report;
         // this.exportToCSV();
+        if ( this.props.success !== true ) {
+          return (
+              <div className="lds-grid">
+                  <div style={{marginTop: "100px"}}><CircularProgress /></div>
+              </div>
+          )
+        }
 
         return(
             <div className="table">
@@ -185,6 +193,7 @@ class CommentInbox extends Component {
 }
 
 const mapStateToProps = state => ({
+    success: state.success,
     report: state.data.report,
     bot_number: state.bot
 });

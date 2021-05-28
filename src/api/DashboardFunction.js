@@ -1,7 +1,7 @@
 import axios from "axios";
-import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo } from "./../store/actions/actions";
+import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo, fetchDmInboxDataSuccess,fetchCommentInboxDataSuccess } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
+const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -12,6 +12,28 @@ export function getAllData() {
         }).catch(err => {
             console.error(err);
             dispatch(fetchDataFailed());
+        })
+    }
+}
+
+export function getDmData() {
+    return dispatch => {
+        axiosInstance.post('/fetch_dm_data').then(res => {
+
+            dispatch(fetchDmInboxDataSuccess(res.data));
+        }).catch(err => {
+            console.error(err);
+        })
+    }
+}
+
+export function getCommentData() {
+    return dispatch => {
+        axiosInstance.post('/fetch_comment_data').then(res => {
+
+            dispatch(fetchCommentInboxDataSuccess(res.data));
+        }).catch(err => {
+            console.error(err);
         })
     }
 }

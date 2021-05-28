@@ -23,7 +23,7 @@ import LastPage from '@material-ui/icons/LastPage';
 import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
-import View from "@material-ui/icons/Visibility";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { getAllData, updateIsMarked} from "./../api/DashboardFunction";
 
@@ -57,7 +57,8 @@ class TwitterAccount extends Component {
     }
 
     async componentDidMount() {
-        this.props.getAllData();
+      if( this.props.success === true ) return ;
+      this.props.getAllData();
     }
 
     handleDisplayAccountInfo = (event, data) => {
@@ -67,6 +68,13 @@ class TwitterAccount extends Component {
     render() {
         const accountData = this.props.account_data;
         // this.exportToCSV();
+        if ( this.props.success !== true ) {
+          return (
+              <div className="lds-grid">
+                  <div style={{marginTop: "100px"}}><CircularProgress /></div>
+              </div>
+          )
+        }
 
         return(
             <div className="account_table">
@@ -130,6 +138,7 @@ class TwitterAccount extends Component {
 }
 
 const mapStateToProps = state => ({
+    success: state.success,
     account_data: state.data.account,
     bot_number: state.bot
 });

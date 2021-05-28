@@ -25,7 +25,8 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import View from "@material-ui/icons/Visibility";
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { startBot, endBot, getAllData, updateIsMarkedDm } from "./../api/DashboardFunction";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { getAllData, updateIsMarkedDm, getDmData } from "./../api/DashboardFunction";
 
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -57,6 +58,8 @@ class DmInbox extends Component {
     }
 
     async componentDidMount() {
+        if( this.props.success === true ) return ;
+        // this.props.getDmData();
         this.props.getAllData();
     }
 
@@ -108,16 +111,15 @@ class DmInbox extends Component {
     }
 
     render() {
-        {
-            if ( this.props.success !== true ) {
-                return (
-                    <div className="lds-grid">
-                        <div></div><div></div><div></div><div></div><div></div><div></div>
-                    </div>
-                )
-            }
+        if ( this.props.success !== true ) {
+            return (
+                <div className="lds-grid">
+                    <div style={{marginTop: "100px"}}><CircularProgress /></div>
+                </div>
+            )
         }
 
+        console.log("her", this.props.new_message)
         const new_message = this.props.new_message;
         const { hoveringOver } = this.state;
         let filtered_message 
@@ -129,13 +131,15 @@ class DmInbox extends Component {
         }
         
         if (filtered_message) {
-            filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
+            // filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
+
 
             // for (var i = 0 ; i < filtered_message.length; i ++) {
             //     const save_time = new Date(filtered_message[i].save_time);
             //     console.log("I am tim!!!", save_time);
             //     filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
             // }
+
             //show only last message from the same user
             for (var i = 0 ; i < filtered_message.length -1; i ++) {
                 if (filtered_message[i].content.length >= 20){
@@ -215,6 +219,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     getAllData,
+    getDmData,
 }, dispatch);
 
 export default connect(

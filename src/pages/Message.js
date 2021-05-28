@@ -24,7 +24,7 @@ class Message extends Component {
         const username = this.props.match.params.id;
         const bot_number = this.props.match.params.num;
         const profile = this.props.match.params.profile
-        console.log("here is compoent", username, bot_number, profile)
+
         this.setState({username: username, bot_number: bot_number, profile: profile})
         const data = {
             username: username,
