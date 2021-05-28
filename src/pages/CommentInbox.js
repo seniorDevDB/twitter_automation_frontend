@@ -124,23 +124,6 @@ class CommentInbox extends Component {
             filtered_comment = reply_comment.filter((item) => item.bot_number === this.props.bot_number)
         }
 
-        if (filtered_comment) {
-            // filtered_comment.sort((a, b) => this.dateCompare(a.save_time, b.save_time));
-            // for (var i = 0 ; i < filtered_comment.length; i ++) {
-            //     const save_time = new Date(filtered_comment[i].save_time);
-            //     console.log("I am tim!!!", save_time);
-            //     filtered_comment[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
-            // }
-            for (var i = 0; i < filtered_comment.length; i++) {
-                if (filtered_comment[i].content.length >= 20){
-                    filtered_comment[i].content = filtered_comment[i].content.slice(0, 20) + "..."
-                }
-                if (filtered_comment[i].to_username == "@peachlyapp") {
-                    filtered_comment.splice(i, 1)
-                }
-
-            }
-        }
 
         return(
             <div className="table">
