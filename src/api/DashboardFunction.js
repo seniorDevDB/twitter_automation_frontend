@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo, fetchDmInboxDataSuccess,fetchCommentInboxDataSuccess, updateMarkedDM, updateMarkedComment } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
+const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
 
 export function getAllData() {
     return dispatch => {
