@@ -16,7 +16,7 @@ class Message extends Component {
             msg_content: "",
             username: "",
             bot_number: "",
-            profile: ""
+            profile_port: ""
         };
     }
 
@@ -24,12 +24,13 @@ class Message extends Component {
         const username = this.props.match.params.id;
         const bot_number = this.props.match.params.num;
         const profile = this.props.match.params.profile
-
-        this.setState({username: username, bot_number: bot_number, profile: profile})
+        console.log("profile", profile)
+        
+        this.setState({username: username, bot_number: bot_number, profile_port: profile})
         const data = {
             username: username,
             bot_number: bot_number,
-            profile: profile
+            profile_port: profile
         }
         this.props.displayMsg(data);
     }
@@ -41,11 +42,11 @@ class Message extends Component {
     }
 
     sendMsg = () => {
-        console.log("send msg", this.state.msg_content)
+        console.log("send msg", this.state.profile_port)
         const data = {
             username: this.state.username,
             bot_number: this.state.bot_number,
-            profile: this.state.profile,
+            profile_port: this.state.profile_port,
             content: this.state.msg_content,
             link: localStorage.getItem('dm_link'),
         }

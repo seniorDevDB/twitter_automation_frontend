@@ -180,14 +180,13 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
     }
 
     const botDropDown = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 10; i++) {
       if (i == 0){
         botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i) }>All Bots</Dropdown.Item>)
       }
       else{
         botDropDown.push(<Dropdown.Item as="button" onClick={ () => handleBot(i) }>Bot{i}</Dropdown.Item>)
       }
-      
     }
 
     return (
@@ -204,7 +203,7 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                     <HomeIcon fontSize="large"/>
                   </Tooltip>
                 </Typography>
-                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ commentReply }>
+                {/* <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ commentReply }>
                 {
                     commentNotification && 
                     <Badge color="error" badgeContent=" " variant="dot">
@@ -217,7 +216,7 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                     !commentNotification && <Tooltip title="Comment"><CommentIcon fontSize="large"/></Tooltip>
                 }
                 
-                </Typography>
+                </Typography> */}
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ dmReply }>
                 {
                     dmNotification && 
@@ -241,11 +240,11 @@ const Navbar = ({handleDrawerOpen, hasHamburger, open, hanldeModalState, dmNotif
                     <AccountBoxIcon fontSize="large"/>
                   </Tooltip>
                 </Typography>
-                <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ goToLead }>
+                {/* <Typography component="h1" variant="h6" className={`${classes.menu} float-left`} color="inherit" onClick={ goToLead }>
                   <Tooltip title="Leads">
                     <StorageIcon fontSize="large"/>
                   </Tooltip>
-                </Typography>
+                </Typography> */}
                 <Typography component="h1" variant="h6" className={`${classes.menu} float-right`} color="inherit" onClick={ logout }>
                   <Tooltip title="Logout">
                     <ExitToAppIcon fontSize="large"/>

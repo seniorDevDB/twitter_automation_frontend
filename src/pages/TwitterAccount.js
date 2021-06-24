@@ -107,13 +107,11 @@ class TwitterAccount extends Component {
                         { title: "Bot Number", field: "bot_number", width: "20%" },
                         { title: "Status", field: "status" },
                         { title: "Leads", field: "number_of_tried_leads"},
-                        { title: "DM", field: "dm"},
-                        { title: "DM Reply", field: "dm_reply"},
-                        { title: "DM Expired", field: "dm_expired" },
-                        { title: "Comment", field: "comment"},
-                        { title: "Comment Reply", field: "comment_reply"},
                         { title: "Follow", field: "follow"},
                         { title: "Follow Back", field: "follow_back"},
+                        { title: "Unfollow", field: "unfollow"},
+                        { title: "DM Reply", field: "dm_reply"},
+
                     ]}
                     data={accountData}
                     options={{

@@ -32,13 +32,13 @@ function App() {
           <Route exact path="/join" component={Join}></Route>
           <Route exact path="/dashboard" component={Dashboard}></Route>
           <Route exact path="/message/:id/:num/:profile" component={Message}></Route>
-          <Route exact path="/comment/:account/:username/:num/:profile" component={Comment}></Route>
-          <Route exact path="/comment-inbox" component={CommentInbox}></Route>
+          {/* <Route exact path="/comment/:account/:username/:num/:profile" component={Comment}></Route>
+          <Route exact path="/comment-inbox" component={CommentInbox}></Route> */}
           <Route exact path="/dm-inbox" component={DmInbox}></Route>
           <Route exact path="/report" component={Report}></Route>
           <Route exact path="/twitter_account" component={TwitterAccount}></Route>
           <Route exact path="/account/:username/:bot_number" component={TwitterAccountInfo}></Route>
-          <Route exact path="/lead" component={Lead}></Route>
+          {/* <Route exact path="/lead" component={Lead}></Route> */}
         </div>
       ) : (
         <div className="App" style={{backgroundColor:"#42389d"}}>
@@ -48,11 +48,11 @@ function App() {
         <Route exact path="/join" component={Join}></Route>
         <Route exact path="/dashboard" component={Dashboard}></Route>
         <Route exact path="/message/:id/:num/:profile" component={Message}></Route>
-        <Route exact path="/comment/:account/:username/:num/:profile" component={Comment}></Route>
-        <Route exact path="/comment-inbox" component={CommentInbox}></Route>
+        {/* <Route exact path="/comment/:account/:username/:num/:profile" component={Comment}></Route>
+        <Route exact path="/comment-inbox" component={CommentInbox}></Route> */}
         <Route exact path="/dm-inbox" component={DmInbox}></Route>
         <Route exact path="/report" component={Report}></Route>
-        <Route exact path="/lead" component={Lead}></Route>
+        {/* <Route exact path="/lead" component={Lead}></Route> */}
       </div>
       )}
 

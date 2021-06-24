@@ -91,7 +91,7 @@ class DmInbox extends Component {
         
         //save the link into localstorage
         localStorage.setItem('dm_link', data.link)
-        this.props.history.push(`/message/${data.username}/${data.bot_number}/${data.profile}`)
+        this.props.history.push(`/message/${data.username}/${data.bot_number}/${data.profile_port}`)
     }
 
     dateCompare = (firstDate, secondDate) => {
@@ -160,7 +160,7 @@ class DmInbox extends Component {
                         { title: "Message Content", field: "content"},
                         // { title: "Save Time", field: "save_time"},
                         { title: "Bot Number", field: "bot_number"},
-                        { title: "Browser Number", field: "profile" },
+                        { title: "Port Number", field: "profile_port"},
                     ]}
                     data={filtered_message}
                     options={{

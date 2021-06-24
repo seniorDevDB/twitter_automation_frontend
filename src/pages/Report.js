@@ -92,15 +92,9 @@ class CommentInbox extends Component {
         let titles = [
             "Bot Number",
             "Number of Leads",
-            "Sent DM",
-            "Expired DM",
-            "Spintax1 Reply",
-            "Spintax2 Reply",
-            "Sent Comment",
-            "Expired Comment",
-            "Comment Reply",
             "Follow",
-            "Follow Back"
+            "Follow Back",
+            "Spintax1 Reply",
         ];
         csv.push(titles.join(","));
         for( let i = 0; i < this.props.report.length; i ++ ) {
@@ -151,15 +145,10 @@ class CommentInbox extends Component {
                     columns={[
                         { title: "Bot Number", field: "bot_number", width: "20%" },
                         { title: "Number of Leads", field: "lead_number", width: "20%" },
-                        { title: "Sent DM", field: "sent_dm"},
-                        { title: "Expired DM", field: "expired_dm"},
-                        { title: "Spintax1 Reply", field: "spintax1_reply"},
-                        // { title: "Spintax2 Reply", field: "spintax2_reply"},
-                        { title: "Sent Comment", field: "sent_comment"},
-                        { title: "Expired Comment", field: "expired_comment"},
-                        { title: "Comment Reply", field: "comment_reply" },
                         { title: "Follow", field: "follow"},
-                        { title: "Follow Back", field: "follow_back"}
+                        { title: "Follow Back", field: "follow_back"},
+                        { title: "Unfollow", field: "unfollow"},
+                        { title: "Spintax1 Reply", field: "spintax1_reply"},
                     ]}
                     data={report}
                     options={{

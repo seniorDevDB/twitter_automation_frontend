@@ -1,7 +1,7 @@
 import axios from "axios";
 import { fetchDataFailed, fetchDataPending, fetchDataSuccess, fetchMessageData, fetchCommentData, commentNotify, dmNotify, sendMsgSuccess,sendCommentSuccess,setSelectedBot, fetchAccountInfo, fetchDmInboxDataSuccess,fetchCommentInboxDataSuccess, updateMarkedDM, updateMarkedComment } from "./../store/actions/actions";
 import history from "./../history"
-const axiosInstance = axios.create({baseURL: "http://localhost:5000"})
+const axiosInstance = axios.create({baseURL: "http://3.140.95.106:5000"})
 
 export function getAllData() {
     return dispatch => {
@@ -197,7 +197,7 @@ export const displayMsg = (data) => {
         .post("/display_msg", {
             username: data.username,
             bot_number: data.bot_number,
-            profile: data.profile
+            profile_port: data.profile_port
         })
         .then((res) => {
             console.log("RESPONSE", res.data)
@@ -210,13 +210,14 @@ export const displayMsg = (data) => {
 }
 
 export const newMsg = (data) => {
+    console.log("mmm", data)
     return dispatch => axiosInstance
         .post("/new_msg", {
             content: data.content,
             username: data.username,
             link: data.link,
             bot_number: data.bot_number,
-            profile: data.profile,
+            profile_port: data.profile_port,
         })
         .then((res) => {
             dispatch(sendMsgSuccess(data));
