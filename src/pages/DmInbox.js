@@ -77,6 +77,7 @@ class DmInbox extends Component {
 
     handleDisplayMessage = (event, data) => {
         console.log("I am dat!!", data);
+        
         // udpate is marked
         const info = {
             account_username: data.account_username,
@@ -127,28 +128,6 @@ class DmInbox extends Component {
             filtered_message= new_message.filter((item) => item.bot_number === this.props.bot_number)
         }
         
-        if (filtered_message) {
-            // filtered_message.sort((a,b) => this.dateCompare(a.save_time, b.save_time))
-
-
-            // for (var i = 0 ; i < filtered_message.length; i ++) {
-            //     const save_time = new Date(filtered_message[i].save_time);
-            //     console.log("I am tim!!!", save_time);
-            //     filtered_message[i].save_time = save_time.toLocaleString('default', { month: 'short', day: 'numeric' })
-            // }
-
-            //show only last message from the same user
-            for (var i = 0 ; i < filtered_message.length -1; i ++) {
-                if (filtered_message[i].content.length >= 20){
-                    filtered_message[i].content = filtered_message[i].content.slice(0, 20) + "..."
-                }
-                if (filtered_message[i].username == filtered_message[i+1].username) {
-                    filtered_message.splice(i, 1)
-                    i = i-1
-                }
-            }
-        }
-        
 
         return(
             <div className="table">
@@ -194,14 +173,6 @@ class DmInbox extends Component {
                         }
                     }}
                     onRowClick = {this.handleDisplayMessage}
-                    // actions={[
-                    //     {
-                    //     icon: View,
-                    //     tooltip: "View",
-                    //     onClick: (event, rowData) =>
-                    //         {this.handleDisplayComment(rowData)}
-                    //     }
-                    // ]}
                 />
             </div>
         )

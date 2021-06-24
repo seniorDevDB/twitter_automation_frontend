@@ -506,3 +506,9 @@ ul {
     text-align: center !important;
     margin-top: 64px;
 }
+
+table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
