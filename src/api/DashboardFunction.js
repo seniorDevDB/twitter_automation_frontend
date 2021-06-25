@@ -131,6 +131,32 @@ export const checkComment = (data) => {
         });
 }
 
+export const resetReport = () => {
+    return axiosInstance
+        .post("/reset_report", {
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
+export const resetAccount = () => {
+    return axiosInstance
+        .post("/reset_account", {
+        })
+        .then((res) => {
+            console.log(res.data)
+            return res.data;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
 export const displayComment = (data) => {
     console.log("here is display comment fucntion")
     return dispatch => {

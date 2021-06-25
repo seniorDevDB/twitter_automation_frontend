@@ -8,7 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import './style.css'
 
-import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification, checkFollow } from "./../api/DashboardFunction";
+import { startBot, endBot, getAllData, checkDM, checkComment, checkNotification, checkFollow, resetReport, resetAccount } from "./../api/DashboardFunction";
 
 class Dashboard extends Component {
     constructor() {
@@ -93,6 +93,22 @@ class Dashboard extends Component {
         })
     }
 
+    handleResetReport = () => {
+        resetReport().then((res) => {
+            if (res.code == "failed"){
+                alert(res.message)
+            } 
+        })
+    }
+
+    handleResetAccount = () => {
+        resetAccount().then((res) => {
+            if (res.code == "failed"){
+                alert(res.message)
+            } 
+        })
+    }
+
     handleCheckDM = () => {
         console.log("check dm clicked")
         checkDM(this.props.bot_number).then((res) => {
@@ -161,6 +177,8 @@ class Dashboard extends Component {
                     <div className="control-div">
                         <Button variant="primary" onClick = {this.handleStartAutomation}>Start Automation</Button>
                         <Button variant="primary" onClick = {this.handleEndAutomation}>End Automation</Button>
+                        <Button variant="primary" onClick = {this.handleResetReport}>Reset Report</Button>
+                        <Button variant="primary" onClick = {this.handleResetAccount}>Reset Account Report</Button>
                         {/* <Button variant="primary" disabled onClick = {this.handleCheckDM} >Check Coming DM</Button>
                         <Button variant="primary" disabled onClick = {this.handleCheckComment} >Check Comment Reply</Button>
                         <Button variant="primary" disabled onClick = {this.handleCheckFollow} >Check Follow Back</Button> */}
